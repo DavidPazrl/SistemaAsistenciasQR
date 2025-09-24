@@ -14,9 +14,9 @@ class AuthController {
         if ($user) {
             $_SESSION['idPersonal'] = $user['idPersonal'];
             $_SESSION['usuario'] = $user['usuario'];
-            $_SESSION['rol'] = $user['rol'];
+            $_SESSION['rol'] = strtolower($user['rol']);
 
-            if ($user['rol'] === 'Admin'){
+            if ($user['rol'] === 'admin'){
                 header("Location: ../views/admin/dashboard.php");
             } else {
                 header("Location: ../views/encargado/dashboard.php");

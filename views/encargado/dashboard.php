@@ -1,6 +1,6 @@
 <?php
 session_start();
-if (!isset($_SESSION['usuario']) || $_SESSION['rol'] !== 'Encargado'){
+if (!isset($_SESSION['usuario']) || $_SESSION['rol'] !== 'encargado'){
     header("Location: ../auth/login.php");
     exit();
 }

@@ -2,7 +2,7 @@
 session_start();
 if (isset($_SESSION['usuario'])){
     
-    if ($_SESSION['rol'] === 'Admin'){
+    if ($_SESSION['rol'] === 'admin'){
         header("Location: ../admin/dashboard.php");
     } else {
         header("Location: ../encargado/dashboard.php");

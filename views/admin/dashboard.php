@@ -2,10 +2,14 @@
 session_start();
 
 if (!isset($_SESSION['usuario'])) {
-    header("Location: ../../auth/login.php");
+    header("Location: /views/auth/login.php");
     exit();
 }
 $nombreUsuario = $_SESSION['usuario'];
+
+require_once __DIR__ . '/../../controllers/AlumnoController.php';
+$controller = new AlumnoController();
+$alumnos = $controller->index();
 ?>
 
 <!DOCTYPE html>
@@ -30,7 +34,7 @@ $nombreUsuario = $_SESSION['usuario'];
                 <li><a href="#" onclick="cargarSeccion('inicio')">Inicio</a></li>
                 <li><a href="#" onclick="cargarSeccion('gestion_usuarios')">Gestión Usuarios</a></li>
                 <li><a href="#" onclick="cargarSeccion('gestion_encargados')">Gestión Encargados</a></li>
-                <li><a href="partials/gestion_alumnos.php" onclick="cargarSeccion('gestion_alumnos')">Gestión Alumnos</a></li>
+                <li><a href="#" onclick="cargarSeccion('gestion_alumnos')">Gestión Alumnos</a></li>
                 <li><a href="../../logout.php">Cerrar Sesión</a></li>
             </ul>
         </nav>

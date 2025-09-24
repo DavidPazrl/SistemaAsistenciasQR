@@ -28,16 +28,31 @@ class AlumnoController {
         $this->alumno->Seccion = $data['Seccion'];
         $this->alumno->qr_code = "QR" . $data['DNI'];
 
-        return $this->alumno->create();
+        // Intentar guardar y manejar duplicados
+        try {
+            $this->alumno->create();
+            return true; 
+        } catch (PDOException $e) {
+            if ($e->getCode() == 23000) { 
+                return "duplicate";
+            } else {
+                return false;
+            }
+        }
     }
 }
 
+// Solo responder a POST para AJAX
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $controller = new AlumnoController();
-    if ($controller->store($_POST)) {
-        header("Location: ../views/admin/alumnos/index.php?success=1");
+    $result = $controller->store($_POST);
+
+    if ($result === "duplicate") {
+        echo "duplicate";
+    } elseif ($result) {
+        echo "success";
     } else {
-        header("Location: ../views/admin/alumnos/create.php?error=1");
+        echo "error";
     }
     exit();
 }
