@@ -41,7 +41,6 @@ $alumnos = $controller->index($grado, $seccion);
     <table id="tabla-alumnos">
         <thead>
             <tr>
-                <th>ID</th>
                 <th>Nombre</th>
                 <th>Apellidos</th>
                 <th>DNI</th>
@@ -54,17 +53,36 @@ $alumnos = $controller->index($grado, $seccion);
         <tbody>
             <?php while ($row = $alumnos->fetch(PDO::FETCH_ASSOC)) : ?>
                 <tr>
-                    <td><?= $row['idEstudiante']; ?></td>
                     <td><?= $row['Nombre']; ?></td>
                     <td><?= $row['Apellidos']; ?></td>
                     <td><?= $row['DNI']; ?></td>
                     <td><?= $row['Grado']; ?></td>
                     <td><?= $row['Seccion']; ?></td>
                     <td><?= $row['qr_code']; ?></td>
-                    <td>
-                        <button class="editar" data-id="<?= $row['idEstudiante']; ?>">Editar</button>
-                        <button class="eliminar" data-id="<?= $row['idEstudiante']; ?>">Eliminar</button>
+                    <td class="operaciones">
+                        <button class="editar" data-id="<?= $row['idEstudiante']; ?>" title="Editar">
+                            <i class="fa-solid fa-pen-to-square"></i>
+                        </button>
+
+                        <button class="eliminar" data-id="<?= $row['idEstudiante']; ?>" title="Eliminar">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+
+                        <?php if (!empty($row['qr_code'])): ?>
+                            <button class="ver-qr" data-id="<?= $row['idEstudiante']; ?>" title="Ver QR">
+                                <i class="fa-solid fa-qrcode"></i>
+                            </button>
+
+                            <button class="imprimir-carnet" data-id="<?= $row['idEstudiante']; ?>" title="Carnet">
+                                <i class="fa-solid fa-id-card"></i>
+                            </button>
+                        <?php else: ?>
+                            <button class="generar-qr" data-id="<?= $row['idEstudiante']; ?>" title="Generar QR">
+                                <i class="fa-solid fa-plus"></i>
+                            </button>
+                        <?php endif; ?>
                     </td>
+
                 </tr>
             <?php endwhile; ?>
         </tbody>
@@ -114,4 +132,5 @@ $alumnos = $controller->index($grado, $seccion);
 <script src="/assets/js/admin/gestion_alumnos.js"></script>
 <link rel="stylesheet" href="/assets/css/admin/gestion_alumnos.css">
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 

@@ -97,4 +97,22 @@ class Alumno {
         return $stmt->fetchColumn() > 0;
     }
 
+    // Obetener por Id
+    public function getById($id) {
+        $query = "SELECT * FROM " . $this->table_name . " WHERE idEstudiante = :id";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(":id", $id);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    // Actualizar solo el campo de qr_code
+    public function updateQR() {
+        $query = "UPDATE " . $this->table_name . " SET qr_code = :qr_code WHERE idEstudiante = :idEstudiante";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(":qr_code", $this->qr_code);
+        $stmt->bindParam(":idEstudiante", $this->idEstudiante);
+        return $stmt->execute();
+    }
+
 }

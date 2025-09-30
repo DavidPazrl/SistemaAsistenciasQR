@@ -128,9 +128,96 @@ document.addEventListener("DOMContentLoaded", () => {
 
     inputExcel.addEventListener("change", () => {
         if (inputExcel.files.length > 0){
-            mostrarMensaje("Archivo selccionado: " + inputExcel.files[0].name, "blue");
+            const archivo = inputExcel.files[0];
+            mostrarMensaje("Archivo Seleccionado: " + archivo.name, "blue");
+            const formData = new FormData();
+            formData.append("action", "importExcel");
+            formData.append("file", archivo);
 
+            fetch("/controllers/AlumnoController.php", {
+                method: "POST",
+                body: formData
+            })
+            .then(res => res.text())
+            .then(data => {
+                console.log("Respuesta del servidor:", data);
+
+                if (data.startsWith("success")) {
+                    Swal.fire({
+                        title: "Importación exitosa",
+                        text: data, 
+                        icon: "success",
+                        confirmButtonText: "OK"
+                    }).then(() => {
+                        location.reload(); 
+                    });
+                } else {
+                    Swal.fire({
+                        title: "Error en la importación",
+                        text: data,
+                        icon: "error",
+                        confirmButtonText: "Cerrar"
+                    });
+                }
+            })
+            .catch(error => {
+                mostrarMensaje("Error en la peticion: "+ error, "red");
+            });
         }
+    });
+
+    document.querySelectorAll(".generar-qr").forEach(btn => {
+        btn.addEventListener("click", () => {
+            const id = btn.dataset.id;
+            const formData = new FormData();
+            formData.append("action", "generarQR");
+            formData.append("id", id);
+
+            fetch("/controllers/AlumnoController.php", {
+                method: "POST",
+                body: formData
+            })
+            .then(res => res.text())
+            .then(data => {
+                if (data.startsWith("success")) {
+                    Swal.fire({
+                        title: "QR generado",
+                        icon: "success",
+                        confirmButtonText: "Ok"
+                    }).then(() => location.reload());
+                } else {
+                    Swal.fire("Error", data, "error");
+                }
+            });
+        });
+    });
+
+    document.querySelectorAll(".ver-qr").forEach(btn => {
+        btn.addEventListener("click", () => {
+            const qrCode = btn.closest("tr").querySelector("td:nth-child(6)").textContent;
+            Swal.fire({
+                title: "QR del Alumno",
+                html: `<img src="/qr_images/${qrCode}.png" style="width:200px;height:200px;">`,
+                confirmButtonText: "Cerrar"
+            });
+        });
+    });
+
+    document.querySelectorAll(".imprimir-carnet").forEach(btn => {
+        btn.addEventListener("click", () => {
+            const fila = btn.closest("tr");
+            const qrCode = fila.querySelector("td:nth-child(6)").textContent;
+            const nombre = fila.children[0].textContent;
+            const apellidos = fila.children[1].textContent;
+            const win = window.open("", "_blank");
+            win.document.write(`
+                <h3>Carnet del Alumno</h3>
+                <p>${nombre} ${apellidos}</p>
+                <img src="/qr_images/${qrCode}.png" style="width:150px;height:150px;">
+            `);
+            win.document.close();
+            win.print();
+        });
     });
 
     function mostrarMensaje(texto, color){
