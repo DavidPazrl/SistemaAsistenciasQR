@@ -1,7 +1,7 @@
 create database AsistenciaQRDemo001;
 use AsistenciaQRDemo001;
 
-CREATE TABLE IF NOT EXISTS estudiante(
+CREATE TABLE estudiante(
     idEstudiante INT PRIMARY KEY AUTO_INCREMENT,
     Nombre VARCHAR(50) NOT NULL,
     Apellidos VARCHAR(50) NOT NULL,
@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS estudiante(
     qr_code VARCHAR(255) UNIQUE
 );
 
-CREATE TABLE IF NOT EXISTS personal(
+CREATE TABLE personal(
     idPersonal INT PRIMARY KEY AUTO_INCREMENT,
     Nombre VARCHAR(50) NOT NULL,
     Apellido VARCHAR(50) NOT NULL,
@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS personal(
     rol ENUM('Admin','Encargado') DEFAULT 'Admin'
 );
 
-CREATE TABLE IF NOT EXISTS asistencia(
+CREATE TABLE asistencia(
     idAsistencia INT PRIMARY KEY AUTO_INCREMENT,
     idEstudiante INT,
     idPersonal INT,
@@ -31,31 +31,45 @@ CREATE TABLE IF NOT EXISTS asistencia(
 );
 
 DELIMITER $$
-CREATE PROCEDURE insertar_estudiante(
-    IN p_nombre VARCHAR(50),
-    IN p_apellido VARCHAR(50),
-    IN p_dni VARCHAR(8),
-    IN p_grado INT,
-    IN p_seccion VARCHAR(5),
-    IN p_qr_code VARCHAR(255)
+CREATE PROCEDURE insertar_estudiante (
+    IN pNombre VARCHAR(100),
+    IN pApellidos VARCHAR(100),
+    IN pDNI CHAR(8),
+    IN pGrado INT,
+    IN pSeccion VARCHAR(5),
+    IN pqr_code VARCHAR(50)
 )
 BEGIN
-    INSERT INTO estudiante (Nombre, Apellidos, DNI, Grado, Seccion, qr_code)
-    VALUES (p_nombre, p_apellido, p_dni, p_grado, p_seccion, p_qr_code);
-END $$
+    -- Evitar duplicados en el DNI
+    IF EXISTS (SELECT 1 FROM estudiante WHERE DNI = pDNI) THEN
+        SIGNAL SQLSTATE '45000' 
+        SET MESSAGE_TEXT = 'DNI duplicado';
+    ELSE
+        INSERT INTO estudiante (Nombre, Apellidos, DNI, Grado, Seccion, qr_code)
+        VALUES (pNombre, pApellidos, pDNI, pGrado, pSeccion, pqr_code);
+    END IF;
+END$$
 DELIMITER ;
-select * from personal;
+
+select * from personal;	
 select * from estudiante;
+
+CALL insertar_estudiante('David','Paz','60951351',3,'A','QR60951351');
+CALL insertar_estudiante('Carlos','Lopez','87654321',3,'B','QR87654321');
 
 INSERT INTO personal (Nombre, Apellido, usuario, contraseña, rol)
 VALUES ('Deyvi','Paz','admin',SHA2('admin123123', 256),'Admin');
 INSERT INTO personal (Nombre, Apellido, usuario, contraseña, rol)
 VALUES ('Deyvi','Paz','user001',SHA2('user001', 256),'Encargado');
 
-
-
-CALL insertar_estudiante('David','Paz','60951351',5,'A','QR60951351');
-CALL insertar_estudiante('Ana','Lopez','60951352',5,'A','QR60951352');
-CALL insertar_estudiante('Maria','Perez','60325195',5,'A','QR60325195');
 select * from estudiante;
+	
+-- Eliminar datos de tabla 
+set SQL_SAFE_UPDATES = 0;
+delete from estudiante;
+alter table estudiante auto_increment = 1;
+
+UPDATE estudiante
+SET qr_code = NULL
+WHERE idEstudiante = 4;
 
