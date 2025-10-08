@@ -24,6 +24,7 @@ if (!isset($_SESSION['usuario']) || strtolower($_SESSION['rol']) !== 'encargado'
         </div>
         <ul class="components">
             <li><a href="#">Agregar alumno manualmente</a></li>
+            <li><a href="#">Reportes</a></li>
             <li>
                 <form method="POST" action="../../logout.php" style="margin: 0;">
                     <button type="submit" class="logout-btn">Cerrar sesión</button>
@@ -47,15 +48,16 @@ if (!isset($_SESSION['usuario']) || strtolower($_SESSION['rol']) !== 'encargado'
         </div>
 
         <!-- Carnet de alumno -->
-        <div id="overlay"></div>
-        <div id="carnet">
+        <div id="overlay" style="display:none;"></div>
+        <div id="carnet" style="display:none;">
             <img id="fotoAlumno" src="" alt="Foto del alumno">
-            <h4 id="nombreAlumno"></h4>
-            <p><strong>DNI:</strong> <span id="dniAlumno"></span></p>
-            <p><strong>Grado:</strong> <span id="gradoAlumno"></span></p>
-            <p><strong>Sección:</strong> <span id="seccionAlumno"></span></p>
+            <div class="datos-alumno">
+                <h4 id="nombreAlumno"></h4>
+                <p><strong>DNI:</strong> <span id="dniAlumno"></span></p>
+                <p><strong>Grado:</strong> <span id="gradoAlumno"></span></p>
+                <p><strong>Sección:</strong> <span id="seccionAlumno"></span></p>
+            </div>
         </div>
-    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/jsqr/dist/jsQR.js"></script>
     <script src="../../assets/js/encargado/dashboard.js" defer></script>

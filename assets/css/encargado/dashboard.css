@@ -1,6 +1,7 @@
 body {
     background-color: #f8f9fa;
     overflow-x: hidden;
+    font-family: Arial, sans-serif;
 }
 
 #sidebar {
@@ -116,23 +117,43 @@ body {
     transform: translate(-50%, -50%);
     background: white;
     color: black;
-    padding: 20px;
+    padding: 40px 50px;
     border-radius: 12px;
-    box-shadow: 0 0 15px rgba(0,0,0,0.4);
-    z-index: 1000;
-    width: 300px;
-    text-align: center;
+    box-shadow: 0 0 40px rgba(0,0,0,0.7);
+    z-index: 1001;
+    width: 80%;     
+    max-width: 800px;
+    min-width: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     animation: fadeIn 0.3s ease-in-out;
 }
 
 #carnet img {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
+    width: 180px;
+    height: 180px;
+    border-radius: 12px;
     object-fit: cover;
-    margin-bottom: 10px;
-    border: 2px solid #007bff;
+    margin-right: 40px;
+    border: 3px solid #007bff;
 }
+
+#carnet .datos-alumno {
+    text-align: left;
+}
+
+#carnet .datos-alumno h4 {
+    margin: 0 0 15px 0;
+    font-size: 1.8rem;
+    color: #007bff;
+}
+
+#carnet .datos-alumno p {
+    margin: 5px 0;
+    font-size: 1.3rem;
+}
+
 
 #overlay {
     display: none;

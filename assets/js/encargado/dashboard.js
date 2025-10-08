@@ -23,8 +23,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 video.play();
                 requestAnimationFrame(tick);
             })
-            .catch((err) => {
-                console.error("No se pudo acceder a la cámara:", err);
+            .catch(() => {
                 alert("No se pudo acceder a la cámara. Verifica los permisos del navegador.");
             });
     }
@@ -50,15 +49,14 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     async function handleQRDetected(qrValue) {
-        console.log("QR detectado:", qrValue);
         mensaje.style.display = "block";
         mensaje.textContent = "Buscando alumno...";
 
         try {
             const response = await fetch("../../controllers/VerificarQRController.php", {
                 method: "POST",
-                headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                body: new URLSearchParams({ qr: qrValue })
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ qr: qrValue })
             });
 
             const data = await response.json();
@@ -72,8 +70,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     scanning = false;
                 }, 2000);
             }
-        } catch (error) {
-            console.error("Error:", error);
+        } catch {
             mensaje.textContent = "Error al buscar alumno";
             setTimeout(() => {
                 mensaje.style.display = "none";
@@ -84,30 +81,30 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function mostrarCarnet(alumno) {
         mensaje.style.display = "none";
-        const overlay = document.createElement("div");
-        overlay.id = "overlay";
+        const foto = document.getElementById("fotoAlumno");
+        const nombre = document.getElementById("nombreAlumno");
+        const dni = document.getElementById("dniAlumno");
+        const grado = document.getElementById("gradoAlumno");
+        const seccion = document.getElementById("seccionAlumno");
+        const overlay = document.getElementById("overlay");
+        const carnet = document.getElementById("carnet");
 
-        // Crear carnet emergente
-        const carnetDiv = document.createElement("div");
-        carnetDiv.id = "carnet";
-        carnetDiv.innerHTML = `
-            <img src="../../assets/img/user.png" alt="Alumno">
-            <h4>${alumno.Nombre} ${alumno.Apellidos}</h4>
-            <p><strong>DNI:</strong> ${alumno.DNI}</p>
-            <p><strong>Grado:</strong> ${alumno.Grado}</p>
-            <p><strong>Sección:</strong> ${alumno.Seccion}</p>
-        `;
-
-        document.body.appendChild(overlay);
-        document.body.appendChild(carnetDiv);
+        foto.src = "../../assets/img/fotodefecto.png";
+        
+        nombre.textContent = `${alumno.Nombre} ${alumno.Apellidos}`;
+        dni.textContent = alumno.DNI;
+        grado.textContent = alumno.Grado;
+        seccion.textContent = alumno.Seccion;
 
         overlay.style.display = "block";
-        carnetDiv.style.display = "block";
+        carnet.style.display = "flex";
 
         setTimeout(() => {
-            carnetDiv.remove();
-            overlay.remove();
+            overlay.style.display = "none";
+            carnet.style.display = "none";
             scanning = false;
         }, 3000);
     }
+
+
 });
