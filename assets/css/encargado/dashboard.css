@@ -9,10 +9,11 @@ body {
     height: 100vh;
     background-color: #212529;
     position: fixed;
-    left: -250px;
+
+    left: -250px; 
     top: 0;
-    transition: all 0.3s;
-    z-index: 1000;
+    transition: left 0.3s ease;
+    z-index: 1100;
 }
 
 #sidebar.active {
@@ -60,20 +61,24 @@ body {
     position: fixed;
     top: 15px;
     left: 15px;
-    font-size: 25px;
-    color: #212529;
+    font-size: 28px;
+    color: #fff;
+    background-color: #374758;
+    padding: 6px 12px;
+    border-radius: 6px;
     cursor: pointer;
-    z-index: 1100;
+    z-index: 1200;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
 }
 
 #content {
     margin-left: 0;
-    transition: all 0.3s;
+    transition: margin-left 0.3s ease;
     padding: 20px;
 }
 
 #content.active {
-    margin-left: 250px;
+    margin-left: 250px; 
 }
 
 .bienvenida {
@@ -153,8 +158,6 @@ body {
     margin: 5px 0;
     font-size: 1.3rem;
 }
-
-
 #overlay {
     display: none;
     position: fixed;

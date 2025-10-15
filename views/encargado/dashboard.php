@@ -23,8 +23,8 @@ if (!isset($_SESSION['usuario']) || strtolower($_SESSION['rol']) !== 'encargado'
             Panel del Encargado
         </div>
         <ul class="components">
-            <li><a href="#">Agregar alumno manualmente</a></li>
-            <li><a href="#">Reportes</a></li>
+            <li><a href="#" id="btn-agregar">Inicio</a></li>
+            <li><a href="#" id="btn-reportes">Reportes</a></li>
             <li>
                 <form method="POST" action="../../logout.php" style="margin: 0;">
                     <button type="submit" class="logout-btn">Cerrar sesión</button>
@@ -32,22 +32,75 @@ if (!isset($_SESSION['usuario']) || strtolower($_SESSION['rol']) !== 'encargado'
             </li>
         </ul>
     </nav>
-
     <div id="content">
-        <div class="bienvenida">
-            <h1>Bienvenido Encargado <?php echo htmlspecialchars($_SESSION['usuario']); ?></h1>
-        </div>
+        <div id="inicio">
+            <div class="bienvenida">
+                <h1>Bienvenido Encargado <?php echo htmlspecialchars($_SESSION['usuario']); ?></h1>
+            </div>
 
-        <div class="camera-container">
-            <video id="camera" autoplay playsinline muted></video>
-            <canvas id="canvas" hidden></canvas>
+            <div class="camera-container">
+                <video id="camera" autoplay playsinline muted></video>
+                <canvas id="canvas" hidden></canvas>
+            </div>
+        </div>
+        <div id="reportes" style="display:none;">
+            <h2 class="text-center mt-4">Sección de Reportes</h2>
+
+            <!-- Filtros -->
+            <div class="filters my-4">
+                <div class="row g-3 justify-content-center">
+                    <div class="col-md-3">
+                        <select id="filtroGrado" class="form-select">
+                            <option value="">Todos los grados</option>
+                            <option value="1">1°</option>
+                            <option value="2">2°</option>
+                            <option value="3">3°</option>
+                            <option value="4">4°</option>
+                            <option value="5">5°</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <select id="filtroSeccion" class="form-select">
+                            <option value="">Todas las secciones</option>
+                            <option value="A">A</option>
+                            <option value="B">B</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <select id="filtroPeriodo" class="form-select">
+                            <option value="semana">Semana</option>
+                            <option value="mes">Mes</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <button id="btnGenerarReporte" class="btn btn-primary w-100">Generar Reporte</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tabla de reportes -->
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered mt-3" id="tablaReportes">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Nombre</th>
+                            <th>DNI</th>
+                            <th>Grado</th>
+                            <th>Sección</th>
+                            <th>Fecha</th>
+                            <th>Asistencia</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                    </tbody>
+                </table>
+            </div>
         </div>
 
         <div id="mensaje" class="alert alert-success text-center" style="display:none;" role="status" aria-live="polite">
             Alumno Encontrado
         </div>
-
-        <!-- Carnet de alumno -->
         <div id="overlay" style="display:none;"></div>
         <div id="carnet" style="display:none;">
             <img id="fotoAlumno" src="" alt="Foto del alumno">
@@ -58,8 +111,8 @@ if (!isset($_SESSION['usuario']) || strtolower($_SESSION['rol']) !== 'encargado'
                 <p><strong>Sección:</strong> <span id="seccionAlumno"></span></p>
             </div>
         </div>
-
+    </div>
     <script src="https://cdn.jsdelivr.net/npm/jsqr/dist/jsQR.js"></script>
-    <script src="../../assets/js/encargado/dashboard.js" defer></script>
+    <script src="../../assets/js/encargado/dashboard.js"></script>
 </body>
 </html>
