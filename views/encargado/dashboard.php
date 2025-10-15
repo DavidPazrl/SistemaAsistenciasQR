@@ -74,6 +74,7 @@ if (!isset($_SESSION['usuario']) || strtolower($_SESSION['rol']) !== 'encargado'
                     </div>
                     <div class="col-md-3">
                         <button id="btnGenerarReporte" class="btn btn-primary w-100">Generar Reporte</button>
+                        <button id="btnExportarExcel" class="btn btn-success flex-fill">Exportar a Excel</button>
                     </div>
                 </div>
             </div>

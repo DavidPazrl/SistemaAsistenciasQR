@@ -137,5 +137,16 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
+    document.getElementById('btnExportarExcel').addEventListener('click', () => {
+        const grado = document.getElementById('filtroGrado').value;
+        const seccion = document.getElementById('filtroSeccion').value;
+        const periodo = document.getElementById('filtroPeriodo').value;
+
+    
+        const url = `../../controllers/ReporteController.php?accion=exportar&grado=${grado}&seccion=${seccion}&periodo=${periodo}`;
+        window.location.href = url;
+    });
+
+
     iniciarCamara();
 });
