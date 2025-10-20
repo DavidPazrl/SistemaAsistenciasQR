@@ -115,4 +115,34 @@ class Alumno {
         return $stmt->execute();
     }
 
+    //Buscar por DNI
+    public function getByDNI($dni) {
+        $stmt = $this->conn->prepare("SELECT * FROM estudiante WHERE DNI = :dni LIMIT 1");
+        $stmt->bindParam(':dni', $dni);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function registrarAsistencia($idEstudiante, $fecha, $idPersonal = null, $tipoAsistencia = "Asistio") {
+        $query = "INSERT INTO asistencia (idEstudiante, idPersonal, fechaEntrada, tipoAsistencia) 
+                VALUES (:idEstudiante, :idPersonal, :fechaEntrada, :tipoAsistencia)";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':idEstudiante', $idEstudiante);
+        $stmt->bindParam(':idPersonal', $idPersonal);
+        $stmt->bindParam(':fechaEntrada', $fecha);
+        $stmt->bindParam(':tipoAsistencia', $tipoAsistencia);
+        return $stmt->execute();
+    }
+
+    public function registrarSalida($idEstudiante, $fechaSalida) {
+        $query = "UPDATE asistencia 
+                SET fechaSalida = :fechaSalida 
+                WHERE idEstudiante = :idEstudiante AND DATE(fechaEntrada) = DATE(:fechaSalida)";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':fechaSalida', $fechaSalida);
+        $stmt->bindParam(':idEstudiante', $idEstudiante);
+        return $stmt->execute();
+    }
+
 }
+

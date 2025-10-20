@@ -4,10 +4,15 @@ document.addEventListener("DOMContentLoaded", function () {
     const content = document.getElementById("content");
     const inicio = document.getElementById("inicio");
     const reportes = document.getElementById("reportes");
+    const agregarAlumno = document.getElementById("agregarAlumno");
     const video = document.getElementById("camera");
     const canvas = document.getElementById("canvas");
     const mensaje = document.getElementById("mensaje");
     const ctx = canvas.getContext("2d");
+    const btnAgregarAlumno = document.getElementById("btn-AgregarAlumno");
+    const formAgregarAlumno = document.getElementById("formAgregarAlumno");
+    const mensajeAgregar = document.getElementById("mensajeAgregar");
+
     let scanning = false;
     let stream = null;
 
@@ -18,7 +23,7 @@ document.addEventListener("DOMContentLoaded", function () {
         toggle.style.left = sidebar.classList.contains("active") ? "250px" : "15px";
     });
 
-    //Camara
+    // Cámara
     async function iniciarCamara() {
         if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
             try {
@@ -96,18 +101,75 @@ document.addEventListener("DOMContentLoaded", function () {
         }, 3000);
     }
 
+    // Mostrar secciones
     document.getElementById('btn-reportes').addEventListener('click', () => {
         inicio.style.display = "none";
+        agregarAlumno.style.display = "none";
         reportes.style.display = "block";
         detenerCamara();
     });
 
     document.getElementById('btn-agregar').addEventListener('click', () => {
         reportes.style.display = "none";
+        agregarAlumno.style.display = "none";
         inicio.style.display = "block";
         iniciarCamara();
     });
 
+    btnAgregarAlumno.addEventListener('click', () => {
+        inicio.style.display = "none";
+        reportes.style.display = "none";
+        agregarAlumno.style.display = "block";
+        detenerCamara();
+    });
+
+    // Enviar formulario de agregar alumno 
+    formAgregarAlumno.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const dni = formAgregarAlumno.dni.value.trim();
+        const fecha = formAgregarAlumno.fecha.value;
+        const hora = formAgregarAlumno.hora.value;
+        const tipo = formAgregarAlumno.tipo.value;
+
+        if (!dni || !fecha || !hora || !tipo) {
+            mensajeAgregar.style.display = "block";
+            mensajeAgregar.className = "alert alert-danger text-center";
+            mensajeAgregar.textContent = "Por favor completa todos los campos obligatorios";
+            return;
+        }
+
+        const data = { dni, fecha, hora, tipo };
+
+        try {
+            const response = await fetch("../../controllers/ADDAlumnoController.php", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data)
+            });
+            const result = await response.json();
+
+            mensajeAgregar.style.display = "block";
+            if (result.status === "success") {
+                mensajeAgregar.className = "alert alert-success text-center";
+                mensajeAgregar.textContent = result.message;
+                formAgregarAlumno.reset();
+            } else {
+                mensajeAgregar.className = "alert alert-danger text-center";
+                mensajeAgregar.textContent = result.message;
+            }
+
+            setTimeout(() => { mensajeAgregar.style.display = "none"; }, 3000);
+        } catch (error) {
+            mensajeAgregar.style.display = "block";
+            mensajeAgregar.className = "alert alert-danger text-center";
+            mensajeAgregar.textContent = "Error al agregar alumno";
+            setTimeout(() => { mensajeAgregar.style.display = "none"; }, 3000);
+            console.error(error);
+        }
+    });
+
+    // Generar reporte
     document.getElementById("btnGenerarReporte").addEventListener("click", async () => {
         const grado = document.getElementById("filtroGrado").value;
         const seccion = document.getElementById("filtroSeccion").value;
@@ -137,16 +199,43 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
+    // Exportar Excel
     document.getElementById('btnExportarExcel').addEventListener('click', () => {
         const grado = document.getElementById('filtroGrado').value;
         const seccion = document.getElementById('filtroSeccion').value;
         const periodo = document.getElementById('filtroPeriodo').value;
 
-    
         const url = `../../controllers/ReporteController.php?accion=exportar&grado=${grado}&seccion=${seccion}&periodo=${periodo}`;
         window.location.href = url;
     });
 
+    // Autocompletar datos al ingresar DNI
+    document.getElementById('dni').addEventListener('blur', async () => {
+        const dni = document.getElementById('dni').value.trim();
+        if(dni === "") return;
+
+        try {
+            const response = await fetch("../../controllers/ADDAlumnoController.php", {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({ action: "buscarDNI", dni })
+            });
+            const data = await response.json();
+            if(data.status === "success") {
+                document.getElementById('nombre').value = data.data.Nombre;
+                document.getElementById('apellidos').value = data.data.Apellidos;
+                document.getElementById('grado').value = data.data.Grado;
+                document.getElementById('seccion').value = data.data.Seccion;
+            } else {
+                document.getElementById('nombre').value = '';
+                document.getElementById('apellidos').value = '';
+                document.getElementById('grado').value = '';
+                document.getElementById('seccion').value = '';
+            }
+        } catch (e) {
+            console.error("Error buscando alumno:", e);
+        }
+    });
 
     iniciarCamara();
 });

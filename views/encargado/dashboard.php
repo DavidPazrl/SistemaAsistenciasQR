@@ -25,6 +25,7 @@ if (!isset($_SESSION['usuario']) || strtolower($_SESSION['rol']) !== 'encargado'
         <ul class="components">
             <li><a href="#" id="btn-agregar">Inicio</a></li>
             <li><a href="#" id="btn-reportes">Reportes</a></li>
+            <li><a href="#" id="btn-AgregarAlumno">Agregar Alumno</a></li>
             <li>
                 <form method="POST" action="../../logout.php" style="margin: 0;">
                     <button type="submit" class="logout-btn">Cerrar sesión</button>
@@ -96,6 +97,67 @@ if (!isset($_SESSION['usuario']) || strtolower($_SESSION['rol']) !== 'encargado'
                         
                     </tbody>
                 </table>
+            </div>
+        </div>
+        <div id="agregarAlumno" style="display:none;">
+            <h2 class="text-center mt-4">Ingresar Alumno</h2>
+            <div class="container mt-4">
+                <form id="formAgregarAlumno">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label for="nombre" class="form-label">Nombre</label>
+                            <input type="text" class="form-control" id="nombre" name="nombre" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="apellidos" class="form-label">Apellidos</label>
+                            <input type="text" class="form-control" id="apellidos" name="apellidos" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="dni" class="form-label">DNI</label>
+                            <input type="text" class="form-control" id="dni" name="dni" required>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="grado" class="form-label">Grado</label>
+                            <select class="form-select" id="grado" name="grado" required>
+                                <option value="">Selecciona...</option>
+                                <option value="1">1°</option>
+                                <option value="2">2°</option>
+                                <option value="3">3°</option>
+                                <option value="4">4°</option>
+                                <option value="5">5°</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="seccion" class="form-label">Sección</label>
+                            <select class="form-select" id="seccion" name="seccion" required>
+                                <option value="">Selecciona...</option>
+                                <option value="A">A</option>
+                                <option value="B">B</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="fecha" class="form-label">Fecha</label>
+                            <input type="date" class="form-control" id="fecha" name="fecha" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="hora" class="form-label">Hora</label>
+                            <input type="time" class="form-control" id="hora" name="hora" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="tipoRegistro" class="form-label">Tipo de Registro</label>
+                            <select class="form-select" id="tipoRegistro" name="tipo" required>
+                                <option value="entrada">Entrada</option>
+                                <option value="salida">Salida</option>
+                            </select>
+                        </div>
+
+                    </div>
+
+                    <div class="mt-4 text-center">
+                        <button type="submit" class ="btn btn-success">Agregar Alumno</button>
+                    </div>
+                </form>
+                <div id="mensajeAgregar" class="alert mt-3 text-center" style="display:none;"></div>
             </div>
         </div>
 
