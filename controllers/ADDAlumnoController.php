@@ -3,8 +3,9 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-require_once __DIR__ . '/../config/database.php';
-require_once __DIR__ . '/../models/Alumno.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/proyectos/SistemaAsistenciasQR/config.php';
+require_once ROOT . 'config/database.php';
+require_once ROOT . 'models/Alumno.php';
 
 header('Content-Type: application/json');
 

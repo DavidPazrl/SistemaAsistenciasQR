@@ -1,11 +1,12 @@
 <?php
 session_start();
+require_once "../../config.php";
 if (isset($_SESSION['usuario'])){
     
     if ($_SESSION['rol'] === 'admin'){
-        header("Location: ../admin/dashboard.php");
+        header("Location: " . BASE_URL . "admin/dashboard.php");
     } else {
-        header("Location: ../encargado/dashboard.php");
+        header("Location: " . BASE_URL . "encargado/dashboard.php");
     }
     exit();
 }
@@ -25,7 +26,7 @@ if (isset($_SESSION['usuario'])){
         <p style="color:red;">Usuario o contraseña incorrectos</p>
     <?php endif; ?>
 
-    <form action="../../controllers/AuthController.php" method="POST">
+    <form action="<?php echo BASE_URL; ?>controllers/AuthController.php" method="POST">
         <label for = "usuario">Usuario:</label><br>
         <input type="text" name="usuario" required><br>
 

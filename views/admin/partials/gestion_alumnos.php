@@ -1,5 +1,7 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT'] . '/controllers/AlumnoController.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/proyectos/SistemaAsistenciasQR/config/config.php';
+require_once ROOT . 'controllers/AlumnoController.php';
+
 $controller = new AlumnoController();
 
 $grado = $_GET['grado'] ?? null;
@@ -129,8 +131,7 @@ $alumnos = $controller->index($grado, $seccion);
     </div>
 </div>
 
-<script src="/assets/js/admin/gestion_alumnos.js"></script>
-<link rel="stylesheet" href="/assets/css/admin/gestion_alumnos.css">
+<script src="<?php echo BASE_URL; ?>assets/js/admin/gestion_alumnos.js"></script>
+<link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/admin/gestion_alumnos.css">
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-

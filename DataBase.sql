@@ -1,6 +1,7 @@
 create database AsistenciaQRDemo001;
 use AsistenciaQRDemo001;
 
+
 CREATE TABLE estudiante(
     idEstudiante INT PRIMARY KEY AUTO_INCREMENT,
     Nombre VARCHAR(50) NOT NULL,
@@ -19,16 +20,18 @@ CREATE TABLE personal(
     contraseña VARCHAR(255) NOT NULL,
     rol ENUM('Admin','Encargado') DEFAULT 'Admin'
 );
-
-CREATE TABLE asistencia(
+		
+CREATE TABLE asistencia (
     idAsistencia INT PRIMARY KEY AUTO_INCREMENT,
     idEstudiante INT,
     idPersonal INT,
-    fechaHora DATETIME DEFAULT CURRENT_TIMESTAMP,
+    fechaEntrada DATETIME DEFAULT CURRENT_TIMESTAMP,
+    fechaSalida DATETIME NULL,
     tipoAsistencia ENUM('Asistio','Falto','Tardanza','Falta justificada','Tardanza justificada') DEFAULT 'Asistio',
     FOREIGN KEY (idEstudiante) REFERENCES estudiante(idEstudiante),
     FOREIGN KEY (idPersonal) REFERENCES personal(idPersonal)
 );
+
 
 DELIMITER $$
 CREATE PROCEDURE insertar_estudiante (
@@ -40,7 +43,6 @@ CREATE PROCEDURE insertar_estudiante (
     IN pqr_code VARCHAR(50)
 )
 BEGIN
-    -- Evitar duplicados en el DNI
     IF EXISTS (SELECT 1 FROM estudiante WHERE DNI = pDNI) THEN
         SIGNAL SQLSTATE '45000' 
         SET MESSAGE_TEXT = 'DNI duplicado';
@@ -51,25 +53,21 @@ BEGIN
 END$$
 DELIMITER ;
 
-select * from personal;	
-select * from estudiante;
+select * from personal;		
+select * from asistencia;
 
 CALL insertar_estudiante('David','Paz','60951351',3,'A','QR60951351');
 CALL insertar_estudiante('Carlos','Lopez','87654321',3,'B','QR87654321');
-
+	
 INSERT INTO personal (Nombre, Apellido, usuario, contraseña, rol)
 VALUES ('Deyvi','Paz','admin',SHA2('admin123123', 256),'Admin');
 INSERT INTO personal (Nombre, Apellido, usuario, contraseña, rol)
 VALUES ('Deyvi','Paz','user001',SHA2('user001', 256),'Encargado');
 
-select * from estudiante;
+			
 	
+
 -- Eliminar datos de tabla 
 set SQL_SAFE_UPDATES = 0;
-delete from estudiante;
-alter table estudiante auto_increment = 1;
-
-UPDATE estudiante
-SET qr_code = NULL
-WHERE idEstudiante = 4;
-
+delete from asistencia;
+alter table asistencia auto_increment = 1;

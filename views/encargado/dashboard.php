@@ -1,7 +1,9 @@
 <?php
+require_once $_SERVER['DOCUMENT_ROOT'] . '/proyectos/SistemaAsistenciasQR/config/config.php';
+
 session_start();
 if (!isset($_SESSION['usuario']) || strtolower($_SESSION['rol']) !== 'encargado') {
-    header("Location: ../auth/login.php");
+    header("Location: " . BASE_URL . "views/auth/login.php");
     exit();
 }
 ?>
@@ -12,7 +14,7 @@ if (!isset($_SESSION['usuario']) || strtolower($_SESSION['rol']) !== 'encargado'
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard Encargado</title>
-    <link rel="stylesheet" href="../../assets/css/encargado/dashboard.css">
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/encargado/dashboard.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
@@ -27,7 +29,7 @@ if (!isset($_SESSION['usuario']) || strtolower($_SESSION['rol']) !== 'encargado'
             <li><a href="#" id="btn-reportes">Reportes</a></li>
             <li><a href="#" id="btn-AgregarAlumno">Agregar Alumno</a></li>
             <li>
-                <form method="POST" action="../../logout.php" style="margin: 0;">
+                <form method="POST" action="<?php echo BASE_URL; ?>logout.php" style="margin: 0;">
                     <button type="submit" class="logout-btn">Cerrar sesión</button>
                 </form>
             </li>
@@ -176,6 +178,6 @@ if (!isset($_SESSION['usuario']) || strtolower($_SESSION['rol']) !== 'encargado'
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/jsqr/dist/jsQR.js"></script>
-    <script src="../../assets/js/encargado/dashboard.js"></script>
+    <script src="<?php echo BASE_URL; ?>assets/js/encargado/dashboard.js"></script>
 </body>
 </html>

@@ -3,8 +3,9 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-require_once __DIR__ . '/../config/database.php';
-require_once __DIR__ . '/../models/Alumno.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/proyectos/SistemaAsistenciasQR/config.php';
+require_once ROOT . 'config/database.php';
+require_once ROOT . 'models/Alumno.php';
 
 class AlumnoController {
     private $db;
@@ -72,7 +73,7 @@ class AlumnoController {
 
     // Excel import
     public function importExcel($filePath) {
-        require_once __DIR__ . '/../vendor/autoload.php';
+        require_once ROOT . 'vendor/autoload.php';
 
         try {
             $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($filePath);
@@ -115,9 +116,9 @@ class AlumnoController {
         if (!$alumno) {
             return "Alumno no encontrado";
         }
-        require_once __DIR__ . '/../libs/phpqrcode/qrlib.php';
+        require_once ROOT . 'libs/phpqrcode/qrlib.php';
         $qrCodeValue = "QR" . $alumno['DNI'];
-        $filePath = __DIR__ . '/../qr_images/' . $qrCodeValue . '.png';
+        $filePath = ROOT . 'qr_images/' . $qrCodeValue . '.png';
         
         if (!file_exists($filePath)) {
             QRcode::png($qrCodeValue, $filePath, QR_ECLEVEL_L, 4);

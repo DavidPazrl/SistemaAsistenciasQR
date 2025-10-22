@@ -1,10 +1,10 @@
 <?php
-require_once "../vendor/autoload.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . '/proyectos/SistemaAsistenciasQR/config.php';
+require_once ROOT . 'models/Reporte.php';
+require_once ROOT . 'config/database.php';
+require_once ROOT . 'vendor/autoload.php'; 
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
-
-require_once "../models/Reporte.php";
-require_once "../config/database.php";
 
 if (isset($_GET['accion']) && $_GET['accion'] === 'exportar') {
     exportarExcel();
@@ -25,9 +25,9 @@ echo json_encode($data);
 
 function exportarExcel()
 {
-    require_once "../vendor/autoload.php";
-    require_once "../models/Reporte.php";
-    require_once "../config/database.php";
+    require_once ROOT . 'vendor/autoload.php';
+    require_once ROOT . 'models/Reporte.php';
+    require_once ROOT . 'config/database.php';
 
     $db = (new Database())->getConnection();
     $reporte = new Reporte($db);
@@ -39,7 +39,7 @@ function exportarExcel()
     $data = $reporte->getReportes($grado, $seccion, $periodo);
 
     // Ruta absoluta al archivo
-    $inputFileName = __DIR__ . '/../assets/excel/ExcelAsistencias.xlsx';
+    $inputFileName = ROOT . 'assets/excel/ExcelAsistencias.xlsx';
     $spreadsheet = IOFactory::load($inputFileName);
     $sheet = $spreadsheet->getActiveSheet();
 

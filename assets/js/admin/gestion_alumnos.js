@@ -30,10 +30,10 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         for (let pair of formData.entries()) {
-        console.log(pair[0]+ ': ' + pair[1]);
+            console.log(pair[0]+ ': ' + pair[1]);
         }
 
-        fetch("/controllers/AlumnoController.php", {
+        fetch(BASE_URL + "controllers/AlumnoController.php", {
             method: "POST",
             body: formData
         })
@@ -42,7 +42,7 @@ document.addEventListener("DOMContentLoaded", () => {
             console.log("Respuesta del servidor:", data);
             if (data.trim() === "success"){
                 mostrarMensaje("Alumno Guardado Correctamente","green");
-                setTimeout(() =>location.reload(), 1000);
+                setTimeout(() => location.reload(), 1000);
             } else if (data.trim() === "duplicate"){
                 mostrarMensaje("El DNI ingresado ya existe", "red");
             } else {
@@ -95,7 +95,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     const formData = new FormData();
                     formData.append("action", "delete");
                     formData.append("id", id);
-                    fetch("/controllers/AlumnoController.php", {
+                    fetch(BASE_URL + "controllers/AlumnoController.php", {
                         method: "POST",
                         body: formData
                     })
@@ -134,7 +134,7 @@ document.addEventListener("DOMContentLoaded", () => {
             formData.append("action", "importExcel");
             formData.append("file", archivo);
 
-            fetch("/controllers/AlumnoController.php", {
+            fetch(BASE_URL + "controllers/AlumnoController.php", {
                 method: "POST",
                 body: formData
             })
@@ -173,7 +173,7 @@ document.addEventListener("DOMContentLoaded", () => {
             formData.append("action", "generarQR");
             formData.append("id", id);
 
-            fetch("/controllers/AlumnoController.php", {
+            fetch(BASE_URL + "controllers/AlumnoController.php", {
                 method: "POST",
                 body: formData
             })
@@ -197,7 +197,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const qrCode = btn.closest("tr").querySelector("td:nth-child(6)").textContent;
             Swal.fire({
                 title: "QR del Alumno",
-                html: `<img src="/qr_images/${qrCode}.png" style="width:200px;height:200px;">`,
+                html: `<img src="${BASE_URL}qr_images/${qrCode}.png" style="width:200px;height:200px;">`,
                 confirmButtonText: "Cerrar"
             });
         });
@@ -213,7 +213,7 @@ document.addEventListener("DOMContentLoaded", () => {
             win.document.write(`
                 <h3>Carnet del Alumno</h3>
                 <p>${nombre} ${apellidos}</p>
-                <img src="/qr_images/${qrCode}.png" style="width:150px;height:150px;">
+                <img src="${BASE_URL}qr_images/${qrCode}.png" style="width:150px;height:150px;">
             `);
             win.document.close();
             win.print();

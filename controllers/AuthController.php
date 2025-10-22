@@ -1,7 +1,8 @@
 <?php
 session_start();
-require_once __DIR__ . '/../models/Usuario.php';
-require_once __DIR__ . '/../config/database.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/proyectos/SistemaAsistenciasQR/config.php';
+require_once ROOT . 'models/Usuario.php';
+require_once ROOT . 'config/database.php';
 
 class AuthController {
     public function login($usuario, $password){
@@ -17,13 +18,13 @@ class AuthController {
             $_SESSION['rol'] = strtolower($user['rol']);
 
             if ($user['rol'] === 'admin'){
-                header("Location: ../views/admin/dashboard.php");
+                header("Location: " . BASE_URL . "views/admin/dashboard.php");
             } else {
-                header("Location: ../views/encargado/dashboard.php");
+                header("Location: " . BASE_URL . "views/encargado/dashboard.php");
             }
             exit();
         } else {
-            header("Location: ../views/auth/login.php?error=1");
+            header("Location: " . BASE_URL . "views/auth/login.php?error=1");
             exit();
         }
     }

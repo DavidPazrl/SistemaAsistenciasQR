@@ -13,10 +13,13 @@ document.addEventListener("DOMContentLoaded", function () {
     const formAgregarAlumno = document.getElementById("formAgregarAlumno");
     const mensajeAgregar = document.getElementById("mensajeAgregar");
 
+    // BASE_URL debe estar definido en tu HTML con PHP
+    // <script>const BASE_URL = '<?php echo BASE_URL; ?>';</script>
+
     let scanning = false;
     let stream = null;
 
-    //Control del menu
+    // Control del menu
     toggle.addEventListener("click", () => {
         sidebar.classList.toggle("active");
         content.classList.toggle("active");
@@ -66,7 +69,7 @@ document.addEventListener("DOMContentLoaded", function () {
         mensaje.style.display = "block";
         mensaje.textContent = "Buscando alumno...";
         try {
-            const response = await fetch("../../controllers/VerificarQRController.php", {
+            const response = await fetch(BASE_URL + "controllers/VerificarQRController.php", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ qr: qrValue })
@@ -85,7 +88,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function mostrarCarnet(alumno) {
         mensaje.style.display = "none";
-        document.getElementById("fotoAlumno").src = "../../assets/img/fotodefecto.png";
+        document.getElementById("fotoAlumno").src = BASE_URL + "assets/img/fotodefecto.png";
         document.getElementById("nombreAlumno").textContent = `${alumno.Nombre} ${alumno.Apellidos}`;
         document.getElementById("dniAlumno").textContent = alumno.DNI;
         document.getElementById("gradoAlumno").textContent = alumno.Grado;
@@ -142,7 +145,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const data = { dni, fecha, hora, tipo };
 
         try {
-            const response = await fetch("../../controllers/ADDAlumnoController.php", {
+            const response = await fetch(BASE_URL + "controllers/ADDAlumnoController.php", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(data)
@@ -175,7 +178,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const seccion = document.getElementById("filtroSeccion").value;
         const periodo = document.getElementById("filtroPeriodo").value;
 
-        const response = await fetch("../../controllers/ReporteController.php", {
+        const response = await fetch(BASE_URL + "controllers/ReporteController.php", {
             method: "POST",
             headers: {"Content-Type": "application/x-www-form-urlencoded"},
             body: `grado=${grado}&seccion=${seccion}&periodo=${periodo}`
@@ -205,7 +208,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const seccion = document.getElementById('filtroSeccion').value;
         const periodo = document.getElementById('filtroPeriodo').value;
 
-        const url = `../../controllers/ReporteController.php?accion=exportar&grado=${grado}&seccion=${seccion}&periodo=${periodo}`;
+        const url = `${BASE_URL}controllers/ReporteController.php?accion=exportar&grado=${grado}&seccion=${seccion}&periodo=${periodo}`;
         window.location.href = url;
     });
 
@@ -215,7 +218,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if(dni === "") return;
 
         try {
-            const response = await fetch("../../controllers/ADDAlumnoController.php", {
+            const response = await fetch(BASE_URL + "controllers/ADDAlumnoController.php", {
                 method: "POST",
                 headers: {"Content-Type": "application/json"},
                 body: JSON.stringify({ action: "buscarDNI", dni })

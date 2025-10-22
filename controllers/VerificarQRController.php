@@ -3,7 +3,9 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-require_once __DIR__ . '/../config/database.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/proyectos/SistemaAsistenciasQR/config.php';
+require_once ROOT . 'config/database.php';
+
 header('Content-Type: application/json; charset=utf-8');
 
 $input = json_decode(file_get_contents("php://input"), true);
