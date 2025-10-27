@@ -13,9 +13,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const formAgregarAlumno = document.getElementById("formAgregarAlumno");
     const mensajeAgregar = document.getElementById("mensajeAgregar");
 
-    // BASE_URL debe estar definido en tu HTML con PHP
-    // <script>const BASE_URL = '<?php echo BASE_URL; ?>';</script>
-
     let scanning = false;
     let stream = null;
 
@@ -133,7 +130,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const dni = formAgregarAlumno.dni.value.trim();
         const fecha = formAgregarAlumno.fecha.value;
         const hora = formAgregarAlumno.hora.value;
-        const tipo = formAgregarAlumno.tipo.value;
+        const tipo = formAgregarAlumno.tipoRegistro.value;
 
         if (!dni || !fecha || !hora || !tipo) {
             mensajeAgregar.style.display = "block";

@@ -17,7 +17,7 @@ class AuthController {
             $_SESSION['usuario'] = $user['usuario'];
             $_SESSION['rol'] = strtolower($user['rol']);
 
-            if ($user['rol'] === 'admin'){
+            if (strtolower($user['rol']) === 'admin') {
                 header("Location: " . BASE_URL . "views/admin/dashboard.php");
             } else {
                 header("Location: " . BASE_URL . "views/encargado/dashboard.php");
@@ -31,16 +31,15 @@ class AuthController {
 
     public function logout(){
         session_destroy();
-        header("Location: ../views/auth/login.php");
+        header("Location: " . BASE_URL . "views/auth/login.php");
         exit();
     }
 }
 
-// Manejo del formulario 
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST'){
-    $usuario = $_POST['usuario'];
-    $password = $_POST['password'];
+// Manejo del formulario
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $usuario = $_POST['usuario'] ?? '';
+    $password = $_POST['password'] ?? '';
 
     $auth = new AuthController();
     $auth->login($usuario, $password);

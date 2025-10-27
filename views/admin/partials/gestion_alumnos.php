@@ -1,12 +1,12 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT'] . '/proyectos/SistemaAsistenciasQR/config/config.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/proyectos/SistemaAsistenciasQR/config.php';
 require_once ROOT . 'controllers/AlumnoController.php';
 
 $controller = new AlumnoController();
 
 $grado = $_GET['grado'] ?? null;
 $seccion = $_GET['seccion'] ?? null;
-$alumnos = $controller->index($grado, $seccion); 
+$alumnos = $controller->index($grado, $seccion);
 ?>
 
 <div class="gestion-alumnos-container">
@@ -17,16 +17,16 @@ $alumnos = $controller->index($grado, $seccion);
         <label>Grado:</label>
         <select name="grado">
             <option value="">Todos</option>
-            <?php for ($i=1; $i<=5; $i++): ?>
-                <option value="<?= $i ?>" <?= ($grado==$i?"selected":"") ?>><?= $i ?></option>
+            <?php for ($i = 1; $i <= 5; $i++): ?>
+                <option value="<?= $i ?>" <?= ($grado == $i ? "selected" : "") ?>><?= $i ?></option>
             <?php endfor; ?>
         </select>
 
         <label>Sección:</label>
         <select name="seccion">
             <option value="">Todas</option>
-            <option value="A" <?= ($seccion=="A"?"selected":"") ?>>A</option>
-            <option value="B" <?= ($seccion=="B"?"selected":"") ?>>B</option>
+            <option value="A" <?= ($seccion == "A" ? "selected" : "") ?>>A</option>
+            <option value="B" <?= ($seccion == "B" ? "selected" : "") ?>>B</option>
         </select>
 
         <button type="submit">Buscar</button>
@@ -53,7 +53,7 @@ $alumnos = $controller->index($grado, $seccion);
             </tr>
         </thead>
         <tbody>
-            <?php while ($row = $alumnos->fetch(PDO::FETCH_ASSOC)) : ?>
+            <?php while ($row = $alumnos->fetch(PDO::FETCH_ASSOC)): ?>
                 <tr>
                     <td><?= $row['Nombre']; ?></td>
                     <td><?= $row['Apellidos']; ?></td>
@@ -101,18 +101,21 @@ $alumnos = $controller->index($grado, $seccion);
             <input type="hidden" name="idEstudiante" id="idEstudiante">
 
             <label>Nombre:</label>
-            <input type="text" name="Nombre" required pattern="[A-Za-zÁÉÍÓÚÑáéíóúñ\s]{2,50}" title="Solo letras, minimo 2 caracteres, maximo 50">
+            <input type="text" name="Nombre" required pattern="[A-Za-zÁÉÍÓÚÑáéíóúñ\s]{2,50}"
+                title="Solo letras, minimo 2 caracteres, maximo 50">
 
             <label>Apellidos:</label>
-            <input type="text" name="Apellidos" required pattern="[A-Za-zÁÉÍÓÚÑáéíóúñ\s]{2,50}" title="Solo letras, minimo 2 caracteres, maximo 50">
+            <input type="text" name="Apellidos" required pattern="[A-Za-zÁÉÍÓÚÑáéíóúñ\s]{2,50}"
+                title="Solo letras, minimo 2 caracteres, maximo 50">
 
             <label>DNI:</label>
-            <input type="text" name="DNI" maxlength="8" required pattern="\d{8}" title="Debe tener Exactamente 8 digitos numericos">
+            <input type="text" name="DNI" maxlength="8" required pattern="\d{8}"
+                title="Debe tener Exactamente 8 digitos numericos">
 
             <label>Grado:</label>
             <select name="Grado" required>
                 <option value="">Seleccione</option>
-                <?php for ($i=1; $i<=5; $i++): ?>
+                <?php for ($i = 1; $i <= 5; $i++): ?>
                     <option value="<?= $i ?>"><?= $i ?></option>
                 <?php endfor; ?>
             </select>
@@ -130,7 +133,9 @@ $alumnos = $controller->index($grado, $seccion);
         </form>
     </div>
 </div>
-
+<script>
+    const BASE_URL = "<?= BASE_URL ?>";
+</script>
 <script src="<?php echo BASE_URL; ?>assets/js/admin/gestion_alumnos.js"></script>
 <link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/admin/gestion_alumnos.css">
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

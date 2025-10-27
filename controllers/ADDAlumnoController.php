@@ -44,7 +44,6 @@ try {
             $idPersonal = $_SESSION['idPersonal'] ?? null;
 
             if ($tipoRegistro === 'entrada') {
-                // Verificar si ya hay asistencia registrada para la fecha
                 $stmt = $this->db->prepare("SELECT COUNT(*) FROM asistencia WHERE idEstudiante = :idEstudiante AND DATE(fechaEntrada) = :fecha");
                 $stmt->bindParam(':idEstudiante', $alumnoID);
                 $stmt->bindParam(':fecha', $fecha);

@@ -25,7 +25,6 @@ class Usuario {
 
         if ($stmt->rowCount() > 0){
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
-            //Validacion de contraseña 
             if ($row['contraseña'] === hash("sha256", $password)){
                 return $row;
             }

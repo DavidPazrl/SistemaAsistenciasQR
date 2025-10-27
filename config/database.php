@@ -3,7 +3,7 @@ class Database {
     private $host = "localhost";
     private $db_name = "AsistenciaQRDemo001";
     private $username = "root";
-    private $password = " ";
+    private $password = "root";
     public $conn;
 
     public function getConnection() {

@@ -43,16 +43,12 @@ function exportarExcel()
     $spreadsheet = IOFactory::load($inputFileName);
     $sheet = $spreadsheet->getActiveSheet();
 
-    // Limpia desde fila 3 hacia abajo
-    // Limpiar solo las columnas de datos (B a I), dejando el formato de las demás intacto
     for ($i = 3; $i <= 1000; $i++) {
         foreach (range('B', 'I') as $col) {
             $sheet->setCellValue("{$col}{$i}", '');
         }
     }
 
-
-    // Empieza en fila 3 (porque fila 2 tiene títulos)
     $row = 3;
     foreach ($data as $r) {
         $sheet->setCellValue("B{$row}", "QR" . $r['DNI']);

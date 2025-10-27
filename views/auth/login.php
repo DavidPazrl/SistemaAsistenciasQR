@@ -4,9 +4,9 @@ require_once "../../config.php";
 if (isset($_SESSION['usuario'])){
     
     if ($_SESSION['rol'] === 'admin'){
-        header("Location: " . BASE_URL . "admin/dashboard.php");
+        header("Location: " . BASE_URL . "views/admin/dashboard.php");
     } else {
-        header("Location: " . BASE_URL . "encargado/dashboard.php");
+        header("Location: " . BASE_URL . "views/encargado/dashboard.php");
     }
     exit();
 }

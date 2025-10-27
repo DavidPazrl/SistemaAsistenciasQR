@@ -1,5 +1,5 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT'] . '/proyectos/SistemaAsistenciasQR/config/config.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/proyectos/SistemaAsistenciasQR/config.php';
 
 session_start();
 if (!isset($_SESSION['usuario']) || strtolower($_SESSION['rol']) !== 'encargado') {
@@ -10,6 +10,7 @@ if (!isset($_SESSION['usuario']) || strtolower($_SESSION['rol']) !== 'encargado'
 
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,6 +18,7 @@ if (!isset($_SESSION['usuario']) || strtolower($_SESSION['rol']) !== 'encargado'
     <link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/encargado/dashboard.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
+
 <body>
     <div id="menu-toggle" aria-label="Abrir menú">&#9776;</div>
 
@@ -96,7 +98,7 @@ if (!isset($_SESSION['usuario']) || strtolower($_SESSION['rol']) !== 'encargado'
                         </tr>
                     </thead>
                     <tbody>
-                        
+
                     </tbody>
                 </table>
             </div>
@@ -156,14 +158,15 @@ if (!isset($_SESSION['usuario']) || strtolower($_SESSION['rol']) !== 'encargado'
                     </div>
 
                     <div class="mt-4 text-center">
-                        <button type="submit" class ="btn btn-success">Agregar Alumno</button>
+                        <button type="submit" class="btn btn-success">Agregar Alumno</button>
                     </div>
                 </form>
                 <div id="mensajeAgregar" class="alert mt-3 text-center" style="display:none;"></div>
             </div>
         </div>
 
-        <div id="mensaje" class="alert alert-success text-center" style="display:none;" role="status" aria-live="polite">
+        <div id="mensaje" class="alert alert-success text-center" style="display:none;" role="status"
+            aria-live="polite">
             Alumno Encontrado
         </div>
         <div id="overlay" style="display:none;"></div>
@@ -177,7 +180,11 @@ if (!isset($_SESSION['usuario']) || strtolower($_SESSION['rol']) !== 'encargado'
             </div>
         </div>
     </div>
+    <script>
+        const BASE_URL = "<?= BASE_URL ?>";
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/jsqr/dist/jsQR.js"></script>
     <script src="<?php echo BASE_URL; ?>assets/js/encargado/dashboard.js"></script>
 </body>
+
 </html>
