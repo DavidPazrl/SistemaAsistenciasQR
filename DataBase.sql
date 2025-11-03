@@ -17,7 +17,7 @@ CREATE TABLE personal(
     Nombre VARCHAR(50) NOT NULL,
     Apellido VARCHAR(50) NOT NULL,
     usuario VARCHAR(20) NOT NULL UNIQUE,
-    contraseña VARCHAR(255) NOT NULL,
+    contrasena VARCHAR(255) NOT NULL,
     rol ENUM('Admin','Encargado') DEFAULT 'Admin'
 );
 		
@@ -59,9 +59,9 @@ select * from asistencia;
 CALL insertar_estudiante('David','Paz','60951351',3,'A','QR60951351');
 CALL insertar_estudiante('Carlos','Lopez','87654321',3,'B','QR87654321');
 	
-INSERT INTO personal (Nombre, Apellido, usuario, contraseña, rol)
+INSERT INTO personal (Nombre, Apellido, usuario, contrasena, rol)
 VALUES ('Deyvi','Paz','admin',SHA2('admin123123', 256),'Admin');
-INSERT INTO personal (Nombre, Apellido, usuario, contraseña, rol)
+INSERT INTO personal (Nombre, Apellido, usuario, contrasena, rol)
 VALUES ('Deyvi','Paz','user001',SHA2('user001', 256),'Encargado');
 
 			

@@ -35,6 +35,7 @@ $alumnos = $controller->index();
                 <li><a href="#" onclick="cargarSeccion('gestion_usuarios')">Gestión Usuarios</a></li>
                 <li><a href="#" onclick="cargarSeccion('gestion_encargados')">Gestión Encargados</a></li>
                 <li><a href="#" onclick="cargarSeccion('gestion_alumnos')">Gestión Alumnos</a></li>
+                <li><a href="#" onclick="cargarSeccion('calendario')">Calendario</a></li>
                 <li><a href="<?php echo BASE_URL; ?>logout.php">Cerrar Sesión</a></li>
             </ul>
         </nav>
