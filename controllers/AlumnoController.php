@@ -81,7 +81,7 @@ class AlumnoController {
             $importados = 0;
 
             foreach ($worksheet->getRowIterator() as $rowIndex => $row) {
-                if ($rowIndex == 1) continue; // saltar encabezado
+                if ($rowIndex == 1) continue; 
 
                 $cellIterator = $row->getCellIterator();
                 $cellIterator->setIterateOnlyExistingCells(false);

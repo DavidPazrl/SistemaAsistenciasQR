@@ -1,13 +1,12 @@
 <?php
-if (session_status() === PHP_SESSION_NONE) {
+if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
-
 require_once $_SERVER['DOCUMENT_ROOT'] . '/proyectos/SistemaAsistenciasQR/config.php';
 require_once ROOT . 'config/database.php';
 require_once ROOT . 'models/Usuario.php';
 
-class EncargadoController
+class AdminController
 {
     private $db;
     private $usuario;
@@ -19,29 +18,18 @@ class EncargadoController
         $this->usuario = new Usuario($this->db);
     }
 
-    // Listar encargados
+    // Listar Admin
     public function index()
     {
-        $query = "SELECT * FROM personal WHERE rol = 'Encargado'";
+        $query = "SELECT * FROM personal WHERE rol = 'admin'";
         $stmt = $this->db->prepare($query);
         $stmt->execute();
         return $stmt;
     }
 
-    // Obtener por ID
-    public function getById($id)
-    {
-        $query = "SELECT * FROM personal WHERE idPersonal = :id AND rol = 'Encargado'";
-        $stmt = $this->db->prepare($query);
-        $stmt->bindParam(':id', $id);
-        $stmt->execute();
-        return $stmt->fetch(PDO::FETCH_ASSOC);
-    }
-
-    // Registrar nuevo encargado
+    // Reegistrar un nuevo Admin
     public function store($data)
     {
-        // Validar campos requeridos
         if (empty($data['nombre']) || empty($data['apellido']) || empty($data['usuario']) || empty($data['contrasena'])) {
             error_log("Faltan campos obligatorios en store()");
             return "error";
@@ -67,13 +55,13 @@ class EncargadoController
         }
     }
 
-    // Actualizar encargado
+    // Actualizar Admin
     public function update($data)
     {
         try {
             $query = "UPDATE personal 
                       SET nombre = :nombre, apellido = :apellido, usuario = :usuario
-                      WHERE idPersonal = :idPersonal AND rol = 'Encargado'";
+                      WHERE idPersonal = :idPersonal AND rol = 'Admin'";
             $stmt = $this->db->prepare($query);
             $stmt->bindParam(':nombre', $data['nombre']);
             $stmt->bindParam(':apellido', $data['apellido']);
@@ -87,11 +75,10 @@ class EncargadoController
         }
     }
 
-    // Eliminar encargado
     public function delete($id)
     {
         try {
-            $query = "DELETE FROM personal WHERE idPersonal = :id AND rol = 'Encargado'";
+            $query = "DELETE FROM personal WHERE idPersonal = :id AND rol = 'Admin'";
             $stmt = $this->db->prepare($query);
             $stmt->bindParam(':id', $id);
             $stmt->execute();
@@ -103,8 +90,8 @@ class EncargadoController
     }
 }
 
-// Manejo de peticiones AJAX 
-$controller = new EncargadoController();
+// Manejo de petiicones AJAX
+$controller = new AdminController();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $action = $_POST['action'] ?? null;
@@ -126,15 +113,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         default:
             echo "invalid_action";
             break;
-    }
-    exit;
-}
-
-if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['action'] === 'obtenerPorId') {
-    if (isset($_GET['idPersonal'])) {
-        echo json_encode($controller->getById($_GET['idPersonal']));
-    } else {
-        echo json_encode(['error' => 'Falta idPersonal']);
     }
     exit;
 }

@@ -97,5 +97,53 @@ class Usuario {
         $stmt->bindParam(":idPersonal", $idPersonal);
         return $stmt->execute();
     }
+
+    // Obtener todos los Admin
+    public function obtenerAdmin(){
+        $query = "SELECT * FROM " . $this->table_name . " WHERE rol = 'Admin'";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(":idPersonal", $this->idPersonal);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    // Registrar nuevo Admin
+    public function registrarAdmin($nombre, $apellido, $usuario, $contrasena, $rol = 'Admin'){
+        $hash = hash("sha256", $contrasena);
+        $query = "INSERT INTO " . $this->table_name . "
+                   (nombre, apellido, usuario, contrasena, rol)
+                   VALUES (:nombre, :apellido, :usuario, :contrasena, :rol)";
+        
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(":nombre", $nombre);
+        $stmt->bindParam(":apellido", $apellido);
+        $stmt->bindParam(":usuario", $usuario);
+        $stmt->bindParam(":contrasena", $hash);
+        $stmt->bindParam(":rol", $rol);
+        $resultado = $stmt->execute();
+        return $resultado;
+    } 
+
+    // Actualizar Admin
+    public function actualizarAdmin($idPersonal, $nombre, $apellido, $usuario, $rol){
+        $query = "UPDATE " . $this->table_name . "
+                  SET nombre = :nombre, apellido = :apellido, usuario = :usuario, rol = :rol
+                  WHERE idPersonal = :idPersonal";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(":idPersonal", $idPersonal);
+        $stmt->bindParam(":nombre", $nombre);
+        $stmt->bindParam(":apellido", $apellido);
+        $stmt->bindParam(":usuario", $usuario);
+        $stmt->bindParam(":rol", $rol);
+        return $stmt->execute();
+    }
+        
+    // Eliminar Admin
+    public function eliminarAdmin($idPersonal) {
+        $query = "DELETE FROM " . $this->table_name . " WHERE idPersonal = :idPersonal";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(":idPersonal", $idPersonal);
+        return $stmt->execute();
+    }
 }
 ?>

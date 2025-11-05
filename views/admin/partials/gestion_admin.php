@@ -1,29 +1,29 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/proyectos/SistemaAsistenciasQR/config.php';
-require_once ROOT . 'controllers/EncargadoController.php';
+require_once ROOT . 'controllers/AdminController.php';
 
-$controller = new EncargadoController();
-$encargados = $controller->index();
+$controller = new AdminController();
+$admins = $controller->index();
 ?>
 
-<div class="contenedor-encargados">
+<div class="contenedor-admin">
     <h2 class="titulo-seccion">
-        <i class="fa-solid fa-users-gear"></i> Gestión de Encargados
+        <i class="fa-solid fa-users-gear"></i> Gestión de Admins
     </h2>
     
     <!-- Boton agregar -->
     <div class="acciones">
         <button id="btn-agregar" class="btn-agregar">
-            <i class="fa-solid fa-user-plus"></i> Agregar Encargado
+            <i class="fa-solid fa-user-plus"></i> Agregar Admin
         </button>
     </div>
 
     <!-- Mensaje -->
     <div id="mensaje" class="mensaje"></div>
 
-    <!-- Tabla de encargados -->
+    <!-- Tabla de admin -->
     <div class="tabla-contenedor">
-        <table id="tabla-encargados">
+        <table id="tabla-admin">
             <thead>
                 <tr>
                     <th>#</th>
@@ -37,7 +37,7 @@ $encargados = $controller->index();
             <tbody>
                 <?php 
                 $i = 1;
-                while ($row = $encargados->fetch(PDO::FETCH_ASSOC)): ?>
+                while ($row = $admins->fetch(PDO::FETCH_ASSOC)): ?>
                     <tr>
                         <td><?= $i++; ?></td>
                         <td><?= htmlspecialchars($row['Nombre']); ?></td>
@@ -67,13 +67,13 @@ $encargados = $controller->index();
     </div>
 </div>
 
-<!-- Modal para agregar/editar encargado -->
-<div id="modal-encargado" class="modal">
+<!-- Modal para agregar/editar Admin -->
+<div id="modal-admin" class="modal">
     <div class="modal-contenido">
         <h3 id="modal-titulo">
-            <i class="fa-solid fa-user-pen"></i> Agregar Encargado
+            <i class="fa-solid fa-user-pen"></i> Agregar Admin
         </h3>
-        <form id="form-encargado">
+        <form id="form-admin">
             <input type="hidden" name="idPersonal" id="idPersonal">
 
             <label for="nombre">Nombre:</label>
@@ -89,7 +89,7 @@ $encargados = $controller->index();
             <input type="password" name="contrasena" id="contrasena" minlength="4">
 
             <label for="rol">Rol:</label>
-            <input type="text" name="rol" id="rol" placeholder="Encargado" required>
+            <input type="text" name="rol" id="rol" placeholder="Admin" required>
 
             <div class="modal-botones">
                 <button type="submit" id="btn-guardar" class="btn-guardar">Guardar</button>
@@ -102,7 +102,8 @@ $encargados = $controller->index();
 <script>
     const BASE_URL = "<?= BASE_URL ?>";
 </script>
-<script src="<?= BASE_URL ?>assets/js/admin/gestion_encargados.js"></script>
-<link rel="stylesheet" href="<?= BASE_URL ?>assets/css/admin/gestion_encargados.css">
+<script src="<?= BASE_URL ?>assets/js/admin/gestion_admin.js"></script>
+<link rel="stylesheet" href="<?= BASE_URL ?>assets/css/admin/gestion_admin.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+

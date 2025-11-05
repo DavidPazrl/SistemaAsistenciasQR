@@ -32,7 +32,7 @@ $alumnos = $controller->index();
             <h2>Panel Admin</h2>
             <ul>
                 <li><a href="#" onclick="cargarSeccion('inicio')">Inicio</a></li>
-                <li><a href="#" onclick="cargarSeccion('gestion_usuarios')">Gestión Usuarios</a></li>
+                <li><a href="#" onclick="cargarSeccion('gestion_admin')">Gestión Admins</a></li>
                 <li><a href="#" onclick="cargarSeccion('gestion_encargados')">Gestión Encargados</a></li>
                 <li><a href="#" onclick="cargarSeccion('gestion_alumnos')">Gestión Alumnos</a></li>
                 <li><a href="#" onclick="cargarSeccion('calendario')">Calendario</a></li>
