@@ -1,7 +1,3 @@
-create database AsistenciaQRDemo001;
-use AsistenciaQRDemo001;
-
-
 CREATE TABLE estudiante(
     idEstudiante INT PRIMARY KEY AUTO_INCREMENT,
     Nombre VARCHAR(50) NOT NULL,
