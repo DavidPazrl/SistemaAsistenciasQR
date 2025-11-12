@@ -7,23 +7,27 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/proyectos/SistemaAsistenciasQR/config
 require_once ROOT . 'config/database.php';
 require_once ROOT . 'models/Alumno.php';
 
-class AlumnoController {
+class AlumnoController
+{
     private $db;
     private $alumno;
 
-    public function __construct() {
+    public function __construct()
+    {
         $database = new Database();
         $this->db = $database->getConnection();
         $this->alumno = new Alumno($this->db);
     }
 
     // Listar alumnos 
-    public function index($grado = null, $seccion = null) {
+    public function index($grado = null, $seccion = null)
+    {
         return $this->alumno->getAll($grado, $seccion);
     }
 
     // Guardar alumno
-    public function store($data) {
+    public function store($data)
+    {
         $this->alumno->Nombre = $data['Nombre'];
         $this->alumno->Apellidos = $data['Apellidos'];
         $this->alumno->documento = $data['documento'];
@@ -32,11 +36,11 @@ class AlumnoController {
 
         try {
             $this->alumno->create();
-            return "success"; 
+            return "success";
         } catch (PDOException $e) {
-            if ($e->getCode() == "45000") {   
+            if ($e->getCode() == "45000") {
                 return "duplicate";
-            } elseif ($e->getCode() == "23000") { 
+            } elseif ($e->getCode() == "23000") {
                 return "duplicate";
             } else {
                 return "error";
@@ -45,7 +49,8 @@ class AlumnoController {
     }
 
     // Actualizar alumno
-    public function update($data){
+    public function update($data)
+    {
         $this->alumno->idEstudiante = $data['idEstudiante'];
         $this->alumno->Nombre = $data['Nombre'];
         $this->alumno->Apellidos = $data['Apellidos'];
@@ -54,25 +59,27 @@ class AlumnoController {
         $this->alumno->Seccion = $data['Seccion'];
 
         try {
-            if ($this->alumno->existeDNIEnOtro($this->alumno->DNI, $this->alumno->idEstudiante)){
+            if ($this->alumno->existeDNIEnOtro($this->alumno->DNI, $this->alumno->idEstudiante)) {
                 return "duplicate";
             }
-            if($this->alumno->update()){
+            if ($this->alumno->update()) {
                 return "success";
             }
             return "error";
-        } catch (PDOException $e){
+        } catch (PDOException $e) {
             return "error";
         }
-    } 
-    
+    }
+
     // Eliminar alumno
-    public function delete($id) {
+    public function delete($id)
+    {
         return $this->alumno->delete($id) ? "success" : "error";
     }
 
     // Excel import
-    public function importExcel($filePath) {
+    public function importExcel($filePath)
+    {
         require_once ROOT . 'vendor/autoload.php';
 
         try {
@@ -80,38 +87,88 @@ class AlumnoController {
             $worksheet = $spreadsheet->getActiveSheet();
             $importados = 0;
 
-            foreach ($worksheet->getRowIterator() as $rowIndex => $row) {
-                if ($rowIndex == 1) continue; 
+            // Mapa de grados
+            $gradosMap = [
+                'primero' => '1',
+                'segundo' => '2',
+                'tercero' => '3',
+                'cuarto' => '4',
+                'quinto' => '5',
+                'sexto' => '6'
+            ];
 
-                $cellIterator = $row->getCellIterator();
-                $cellIterator->setIterateOnlyExistingCells(false);
+            // Leer grado y sección desde las celdas superiores
+            $gradoTexto = strtolower(trim($worksheet->getCell('L5')->getValue()));
+            $seccion = trim($worksheet->getCell('T5')->getValue());
 
-                $rowData = [];
-                foreach ($cellIterator as $cell) {
-                    $rowData[] = trim($cell->getValue());
+            // Depuración de encabezados
+            error_log("=== IMPORTACIÓN INICIADA ===");
+            error_log("Grado leído: $gradoTexto | Sección: $seccion");
+
+            // Convertir texto a número
+            $grado = $gradosMap[$gradoTexto] ?? $gradoTexto;
+
+            // Recorremos desde fila 12
+            foreach ($worksheet->getRowIterator(12) as $row) {
+                $rowIndex = $row->getRowIndex();
+
+                // Leer columnas según formato
+                $documento = trim($worksheet->getCell("D{$rowIndex}")->getValue());
+                $apellidoPaterno = trim($worksheet->getCell("I{$rowIndex}")->getValue());
+                $apellidoMaterno = trim($worksheet->getCell("J{$rowIndex}")->getValue());
+                $nombre = trim($worksheet->getCell("K{$rowIndex}")->getValue());
+
+                // Log: valores de fila
+                error_log("Fila {$rowIndex} → Doc: {$documento}, ApP: {$apellidoPaterno}, ApM: {$apellidoMaterno}, Nom: {$nombre}");
+
+                // Saltar filas vacías
+                if (empty($nombre) && empty($apellidoPaterno) && empty($documento)) {
+                    error_log("Fila {$rowIndex} vacía, saltada.");
+                    continue;
                 }
 
-                if (count($rowData) >= 5 && !empty($rowData[0]) && !empty($rowData[2])) {
-                    $data = [
-                        "Nombre"   => $rowData[0],
-                        "Apellidos"=> $rowData[1],
-                        "documento"      => $rowData[2],
-                        "Grado"    => $rowData[3],
-                        "Seccion"  => $rowData[4],
-                    ];
-                    $resultado = $this->store($data);
-                    if ($resultado === "success" || $resultado === "duplicate") {
-                        $importados++;
-                    }
+                $apellidos = trim($apellidoPaterno . " " . $apellidoMaterno);
+
+                // Documento vacío → generar
+                if (empty($documento)) {
+                    $documento = 'SIN-DOC-' . $rowIndex;
+                }
+
+                // Preparar datos
+                $data = [
+                    "Nombre" => $nombre,
+                    "Apellidos" => $apellidos,
+                    "documento" => $documento,
+                    "Grado" => $grado,
+                    "Seccion" => $seccion,
+                    "qr_code" => 'QR' . $documento
+                ];
+
+                // Log antes de guardar
+                error_log("Intentando guardar: " . json_encode($data));
+
+                // Guardar
+                $resultado = $this->store($data);
+                error_log("Resultado del guardado (fila {$rowIndex}): " . $resultado);
+
+                if ($resultado === "success" || $resultado === "duplicate") {
+                    $importados++;
                 }
             }
-            return "success: " . $importados . " registros importados.";
+
+            error_log("=== IMPORTACIÓN FINALIZADA: {$importados} registros importados ===");
+
+            return "success: {$importados} registros importados.";
         } catch (Exception $e) {
+            error_log("ERROR en importación: " . $e->getMessage());
             return "error: " . $e->getMessage();
         }
     }
 
-    public function generarQR($id) {
+
+
+    public function generarQR($id)
+    {
         $alumno = $this->alumno->getById($id);
         if (!$alumno) {
             return "Alumno no encontrado";
@@ -119,7 +176,7 @@ class AlumnoController {
         require_once ROOT . 'libs/phpqrcode/qrlib.php';
         $qrCodeValue = "QR" . $alumno['documento'];
         $filePath = ROOT . 'qr_images/' . $qrCodeValue . '.png';
-        
+
         if (!file_exists($filePath)) {
             QRcode::png($qrCodeValue, $filePath, QR_ECLEVEL_L, 4);
         }
