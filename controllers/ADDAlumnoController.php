@@ -24,7 +24,7 @@ try {
         // Registrar asistencia segun tipo
         public function registrarAsistencia($data) {
 
-            $dni = $data['dni'] ?? '';
+            $dni = $data['documento'] ?? '';
             $tipoRegistro = $data['tipo'] ?? 'entrada'; 
             $fecha = $data['fecha'] ?? date('Y-m-d');      
             $hora = $data['hora'] ?? date('H:i:s');        
@@ -90,8 +90,8 @@ try {
             }
         }
 
-        public function buscarPorDNI($dni) {
-            $alumno = $this->alumno->getByDNI($dni);
+        public function buscarPorDocumento($dni) {
+            $alumno = $this->alumno->getByDocumento($dni);
             if ($alumno) {
                 echo json_encode(["status" => "success", "data" => $alumno]);
             } else {
@@ -105,8 +105,8 @@ try {
     $input = json_decode(file_get_contents('php://input'), true);
 
     if (is_array($input) && !empty($input)) {
-        if (isset($input['action']) && $input['action'] === 'buscarDNI') {
-            $controller->buscarPorDNI($input['dni']);
+        if (isset($input['action']) && $input['action'] === 'buscarDocumento') {
+            $controller->buscarPorDocumento($input['dni']);
         } else {
             $controller->registrarAsistencia($input);
         }

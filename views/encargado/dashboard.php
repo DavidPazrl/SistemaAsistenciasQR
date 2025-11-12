@@ -90,7 +90,7 @@ if (!isset($_SESSION['usuario']) || strtolower($_SESSION['rol']) !== 'encargado'
                     <thead class="table-dark">
                         <tr>
                             <th>Nombre</th>
-                            <th>DNI</th>
+                            <th>Documento</th>
                             <th>Grado</th>
                             <th>Sección</th>
                             <th>Fecha</th>
@@ -117,7 +117,7 @@ if (!isset($_SESSION['usuario']) || strtolower($_SESSION['rol']) !== 'encargado'
                             <input type="text" class="form-control" id="apellidos" name="apellidos" required>
                         </div>
                         <div class="col-md-6">
-                            <label for="dni" class="form-label">DNI</label>
+                            <label for="documento" class="form-label">Documento</label>
                             <input type="text" class="form-control" id="dni" name="dni" required>
                         </div>
                         <div class="col-md-3">
@@ -174,7 +174,7 @@ if (!isset($_SESSION['usuario']) || strtolower($_SESSION['rol']) !== 'encargado'
             <img id="fotoAlumno" src="" alt="Foto del alumno">
             <div class="datos-alumno">
                 <h4 id="nombreAlumno"></h4>
-                <p><strong>DNI:</strong> <span id="dniAlumno"></span></p>
+                <p><strong>Documento:</strong> <span id="dniAlumno"></span></p>
                 <p><strong>Grado:</strong> <span id="gradoAlumno"></span></p>
                 <p><strong>Sección:</strong> <span id="seccionAlumno"></span></p>
             </div>

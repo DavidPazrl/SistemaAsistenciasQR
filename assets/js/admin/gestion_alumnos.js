@@ -44,7 +44,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 mostrarMensaje("Alumno Guardado Correctamente","green");
                 setTimeout(() => location.reload(), 1000);
             } else if (data.trim() === "duplicate"){
-                mostrarMensaje("El DNI ingresado ya existe", "red");
+                mostrarMensaje("El Documento ingresado ya existe", "red");
             } else {
                 mostrarMensaje("Error al guardar el alumno", "red");
             }
@@ -61,7 +61,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const id = btn.dataset.id;
             const nombre = fila.children[1].textContent;
             const apellidos = fila.children[2].textContent;
-            const dni = fila.children[3].textContent;
+            const documento = fila.children[3].textContent;
             const grado = fila.children[4].textContent;
             const seccion = fila.children[5].textContent;
 
@@ -69,7 +69,7 @@ document.addEventListener("DOMContentLoaded", () => {
             form.idEstudiante.value = id;
             form.Nombre.value = nombre;
             form.Apellidos.value = apellidos;
-            form.DNI.value = dni;
+            form.documento.value = documento;
             form.Grado.value = grado;
             form.Seccion.value = seccion;
             form.dataset.action = "update";

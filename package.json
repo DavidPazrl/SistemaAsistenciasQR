@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "fullcalendar": "^6.1.19"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.22",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^3.3.3"
+  }
+}
