@@ -19,7 +19,7 @@ if (empty($qr)) {
 try {
     $database = new Database();
     $db = $database->getConnection();
-    $query = "SELECT idEstudiante, Nombre, Apellidos, DNI, Grado, Seccion, qr_code 
+    $query = "SELECT idEstudiante, Nombre, Apellidos, documento, Grado, Seccion, qr_code 
               FROM estudiante 
               WHERE qr_code = ? 
               LIMIT 1";

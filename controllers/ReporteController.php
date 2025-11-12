@@ -51,7 +51,7 @@ function exportarExcel()
 
     $row = 3;
     foreach ($data as $r) {
-        $sheet->setCellValue("B{$row}", "QR" . $r['DNI']);
+        $sheet->setCellValue("B{$row}", "QR" . $r['documento']);
         $sheet->setCellValue("C{$row}", $r['Nombre'] . ' ' . $r['Apellidos']);
         $sheet->setCellValue("D{$row}", $r['tipoAsistencia'] ?? '');
         $sheet->setCellValue("E{$row}", $r['Grado'] ?? '');

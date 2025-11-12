@@ -6,7 +6,7 @@ class Alumno {
     public $idEstudiante;
     public $Nombre;
     public $Apellidos;
-    public $DNI;
+    public $documento;
     public $Grado;
     public $Seccion;
     public $qr_code;
@@ -49,12 +49,12 @@ class Alumno {
 
     //Insertar Alumno
     public function create(){
-        $query = "CALL insertar_estudiante(:Nombre, :Apellidos, :DNI, :Grado, :Seccion, :qr_code)";
+        $query = "CALL insertar_estudiante(:Nombre, :Apellidos, :documento, :Grado, :Seccion, :qr_code)";
         $stmt = $this->conn->prepare($query);
 
         $stmt->bindParam(":Nombre", $this->Nombre);
         $stmt->bindParam(":Apellidos", $this->Apellidos);
-        $stmt->bindParam(":DNI", $this->DNI);
+        $stmt->bindParam(":documento", $this->documento);
         $stmt->bindParam(":Grado", $this->Grado);
         $stmt->bindParam(":Seccion", $this->Seccion);
         $stmt->bindParam(":qr_code", $this->qr_code);
@@ -65,13 +65,13 @@ class Alumno {
     //Editar
     public function update(){
         $query = "UPDATE " . $this->table_name . " 
-                  SET Nombre = :Nombre, Apellidos = :Apellidos, DNI = :DNI,
+                  SET Nombre = :Nombre, Apellidos = :Apellidos, documento = :documento,
                       Grado = :Grado, Seccion = :Seccion
                   Where idEstudiante = :idEstudiante";
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(":Nombre", $this->Nombre);
         $stmt->bindParam(":Apellidos", $this->Apellidos);
-        $stmt->bindParam(":DNI", $this->DNI);
+        $stmt->bindParam(":documento", $this->documento);
         $stmt->bindParam(":Grado", $this->Grado);
         $stmt->bindParam(":Seccion", $this->Seccion);
         $stmt->bindParam(":idEstudiante", $this->idEstudiante);
@@ -87,11 +87,11 @@ class Alumno {
     }
 
     // Verificar si existe un DNI en otro alumno distinto
-    public function existeDNIEnOtro($dni, $idEstudiante) {
+    public function existeDocumentoEnOtro($documento, $idEstudiante) {
         $query = "SELECT COUNT(*) FROM " . $this->table_name . " 
-                WHERE DNI = :dni AND idEstudiante != :idEstudiante";
+                WHERE documento = :documento AND idEstudiante != :idEstudiante";
         $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(":dni", $dni);
+        $stmt->bindParam(":documento", $documento);
         $stmt->bindParam(":idEstudiante", $idEstudiante);
         $stmt->execute();
         return $stmt->fetchColumn() > 0;
@@ -115,10 +115,10 @@ class Alumno {
         return $stmt->execute();
     }
 
-    //Buscar por DNI
-    public function getByDNI($dni) {
-        $stmt = $this->conn->prepare("SELECT * FROM estudiante WHERE DNI = :dni LIMIT 1");
-        $stmt->bindParam(':dni', $dni);
+    //Buscar por Documento
+    public function getByDocumento($documento) {
+        $stmt = $this->conn->prepare("SELECT * FROM estudiante WHERE documento = :documento LIMIT 1");
+        $stmt->bindParam(':documento', $documento);
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }

@@ -26,7 +26,7 @@ class AlumnoController {
     public function store($data) {
         $this->alumno->Nombre = $data['Nombre'];
         $this->alumno->Apellidos = $data['Apellidos'];
-        $this->alumno->DNI = $data['DNI'];
+        $this->alumno->documento = $data['documento'];
         $this->alumno->Grado = $data['Grado'];
         $this->alumno->Seccion = $data['Seccion'];
 
@@ -49,7 +49,7 @@ class AlumnoController {
         $this->alumno->idEstudiante = $data['idEstudiante'];
         $this->alumno->Nombre = $data['Nombre'];
         $this->alumno->Apellidos = $data['Apellidos'];
-        $this->alumno->DNI = $data['DNI'];
+        $this->alumno->documento = $data['documento'];
         $this->alumno->Grado = $data['Grado'];
         $this->alumno->Seccion = $data['Seccion'];
 
@@ -95,7 +95,7 @@ class AlumnoController {
                     $data = [
                         "Nombre"   => $rowData[0],
                         "Apellidos"=> $rowData[1],
-                        "DNI"      => $rowData[2],
+                        "documento"      => $rowData[2],
                         "Grado"    => $rowData[3],
                         "Seccion"  => $rowData[4],
                     ];
@@ -117,7 +117,7 @@ class AlumnoController {
             return "Alumno no encontrado";
         }
         require_once ROOT . 'libs/phpqrcode/qrlib.php';
-        $qrCodeValue = "QR" . $alumno['DNI'];
+        $qrCodeValue = "QR" . $alumno['documento'];
         $filePath = ROOT . 'qr_images/' . $qrCodeValue . '.png';
         
         if (!file_exists($filePath)) {

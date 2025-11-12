@@ -45,7 +45,7 @@ $alumnos = $controller->index($grado, $seccion);
             <tr>
                 <th>Nombre</th>
                 <th>Apellidos</th>
-                <th>DNI</th>
+                <th>Documento</th>
                 <th>Grado</th>
                 <th>Sección</th>
                 <th>QR Code</th>
@@ -57,7 +57,7 @@ $alumnos = $controller->index($grado, $seccion);
                 <tr>
                     <td><?= $row['Nombre']; ?></td>
                     <td><?= $row['Apellidos']; ?></td>
-                    <td><?= $row['DNI']; ?></td>
+                    <td><?= $row['documento']; ?></td>
                     <td><?= $row['Grado']; ?></td>
                     <td><?= $row['Seccion']; ?></td>
                     <td><?= $row['qr_code']; ?></td>
@@ -108,9 +108,9 @@ $alumnos = $controller->index($grado, $seccion);
             <input type="text" name="Apellidos" required pattern="[A-Za-zÁÉÍÓÚÑáéíóúñ\s]{2,50}"
                 title="Solo letras, minimo 2 caracteres, maximo 50">
 
-            <label>DNI:</label>
-            <input type="text" name="DNI" maxlength="8" required pattern="\d{8}"
-                title="Debe tener Exactamente 8 digitos numericos">
+            <label>Documento:</label>
+            <input type="text" name="documento" maxlength="15" required pattern="\d{8,15}"
+                title="Debe tener entre 8 y 15 digitos numericos">
 
             <label>Grado:</label>
             <select name="Grado" required>

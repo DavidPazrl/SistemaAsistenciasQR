@@ -14,7 +14,7 @@ class Reporte {
             SELECT 
                 e.Nombre,
                 e.Apellidos,
-                e.DNI,
+                e.documento,
                 e.Grado,
                 e.Seccion,
                 a.tipoAsistencia,

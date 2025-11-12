@@ -6,7 +6,7 @@ CREATE TABLE estudiante(
     idEstudiante INT PRIMARY KEY AUTO_INCREMENT,
     Nombre VARCHAR(50) NOT NULL,
     Apellidos VARCHAR(50) NOT NULL,
-    DNI VARCHAR(8) NOT NULL UNIQUE,
+    documento VARCHAR(15) NOT NULL UNIQUE,
     Grado INT NOT NULL,
     Seccion VARCHAR(5),
     qr_code VARCHAR(255) UNIQUE
