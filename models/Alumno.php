@@ -86,7 +86,7 @@ class Alumno {
         return $stmt->execute();
     }
 
-    // Verificar si existe un DNI en otro alumno distinto
+    // Verificar si existe un Documento en otro alumno distinto
     public function existeDocumentoEnOtro($documento, $idEstudiante) {
         $query = "SELECT COUNT(*) FROM " . $this->table_name . " 
                 WHERE documento = :documento AND idEstudiante != :idEstudiante";

@@ -54,7 +54,7 @@ class AlumnoController {
         $this->alumno->Seccion = $data['Seccion'];
 
         try {
-            if ($this->alumno->existeDNIEnOtro($this->alumno->DNI, $this->alumno->idEstudiante)){
+            if ($this->alumno->existeDocumentoEnOtro($this->alumno->documento, $this->alumno->idEstudiante)){
                 return "duplicate";
             }
             if($this->alumno->update()){

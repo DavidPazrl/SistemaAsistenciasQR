@@ -87,7 +87,7 @@ document.addEventListener("DOMContentLoaded", function () {
         mensaje.style.display = "none";
         document.getElementById("fotoAlumno").src = BASE_URL + "assets/img/fotodefecto.png";
         document.getElementById("nombreAlumno").textContent = `${alumno.Nombre} ${alumno.Apellidos}`;
-        document.getElementById("dniAlumno").textContent = alumno.DNI;
+        document.getElementById("documentoAlumno").textContent = alumno.documento;
         document.getElementById("gradoAlumno").textContent = alumno.Grado;
         document.getElementById("seccionAlumno").textContent = alumno.Seccion;
 
@@ -127,19 +127,19 @@ document.addEventListener("DOMContentLoaded", function () {
     formAgregarAlumno.addEventListener("submit", async (e) => {
         e.preventDefault();
 
-        const dni = formAgregarAlumno.dni.value.trim();
+        const documento = formAgregarAlumno.documento.value.trim();
         const fecha = formAgregarAlumno.fecha.value;
         const hora = formAgregarAlumno.hora.value;
         const tipo = formAgregarAlumno.tipoRegistro.value;
 
-        if (!dni || !fecha || !hora || !tipo) {
+        if (!documento || !fecha || !hora || !tipo) {
             mensajeAgregar.style.display = "block";
             mensajeAgregar.className = "alert alert-danger text-center";
             mensajeAgregar.textContent = "Por favor completa todos los campos obligatorios";
             return;
         }
 
-        const data = { dni, fecha, hora, tipo };
+        const data = { documento, fecha, hora, tipo };
 
         try {
             const response = await fetch(BASE_URL + "controllers/ADDAlumnoController.php", {
@@ -189,7 +189,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const tr = document.createElement("tr");
             tr.innerHTML = `
                 <td>${row.Nombre} ${row.Apellidos}</td>
-                <td>${row.DNI}</td>
+                <td>${row.documento}</td>
                 <td>${row.Grado}</td>
                 <td>${row.Seccion}</td>
                 <td>${row.fechaEntrada || ""}</td>
@@ -209,16 +209,16 @@ document.addEventListener("DOMContentLoaded", function () {
         window.location.href = url;
     });
 
-    // Autocompletar datos al ingresar DNI
-    document.getElementById('dni').addEventListener('blur', async () => {
-        const dni = document.getElementById('dni').value.trim();
-        if(dni === "") return;
+    // Autocompletar datos al ingresar Documento
+    document.getElementById('documento').addEventListener('blur', async () => {
+        const documento = document.getElementById('documento').value.trim();
+        if(documento === "") return;
 
         try {
             const response = await fetch(BASE_URL + "controllers/ADDAlumnoController.php", {
                 method: "POST",
                 headers: {"Content-Type": "application/json"},
-                body: JSON.stringify({ action: "buscarDNI", dni })
+                body: JSON.stringify({ action: "buscarDocumento", documento })
             });
             const data = await response.json();
             if(data.status === "success") {
