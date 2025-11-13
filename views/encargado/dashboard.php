@@ -118,7 +118,7 @@ if (!isset($_SESSION['usuario']) || strtolower($_SESSION['rol']) !== 'encargado'
                         </div>
                         <div class="col-md-6">
                             <label for="documento" class="form-label">Documento</label>
-                            <input type="text" class="form-control" id="dni" name="dni" required>
+                            <input type="text" class="form-control" id="documento" name="documento" required>
                         </div>
                         <div class="col-md-3">
                             <label for="grado" class="form-label">Grado</label>
@@ -174,7 +174,7 @@ if (!isset($_SESSION['usuario']) || strtolower($_SESSION['rol']) !== 'encargado'
             <img id="fotoAlumno" src="" alt="Foto del alumno">
             <div class="datos-alumno">
                 <h4 id="nombreAlumno"></h4>
-                <p><strong>Documento:</strong> <span id="dniAlumno"></span></p>
+                <p><strong>Documento:</strong> <span id="documentoAlumno"></span></p>
                 <p><strong>Grado:</strong> <span id="gradoAlumno"></span></p>
                 <p><strong>Sección:</strong> <span id="seccionAlumno"></span></p>
             </div>
@@ -183,7 +183,7 @@ if (!isset($_SESSION['usuario']) || strtolower($_SESSION['rol']) !== 'encargado'
     <script>
         const BASE_URL = "<?= BASE_URL ?>";
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/jsqr/dist/jsQR.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jsqr/dist/jsQR.js?v=2"></script>
     <script src="<?php echo BASE_URL; ?>assets/js/encargado/dashboard.js"></script>
 </body>
 

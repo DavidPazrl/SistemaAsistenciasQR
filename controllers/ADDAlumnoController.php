@@ -11,23 +11,26 @@ header('Content-Type: application/json');
 
 try {
 
-    class ADDAlumnoController {
+    class ADDAlumnoController
+    {
         private $db;
         private $alumno;
 
-        public function __construct() {
+        public function __construct()
+        {
             $database = new Database();
             $this->db = $database->getConnection();
             $this->alumno = new Alumno($this->db);
         }
 
         // Registrar asistencia segun tipo
-        public function registrarAsistencia($data) {
+        public function registrarAsistencia($data)
+        {
 
             $documento = $data['documento'] ?? '';
-            $tipoRegistro = $data['tipo'] ?? 'entrada'; 
-            $fecha = $data['fecha'] ?? date('Y-m-d');      
-            $hora = $data['hora'] ?? date('H:i:s');        
+            $tipoRegistro = $data['tipo'] ?? 'entrada';
+            $fecha = $data['fecha'] ?? date('Y-m-d');
+            $hora = $data['hora'] ?? date('H:i:s');
 
             if (!$documento || !$fecha || !$hora) {
                 echo json_encode(["status" => "error", "message" => "Faltan datos obligatorios"]);
@@ -56,7 +59,7 @@ try {
                 }
 
                 // Determinar tipo de asistencia segun hora
-                $horaLimite = new DateTime("08:00");
+                $horaLimite = new DateTime("08:10");
                 $horaAlumno = new DateTime($hora);
                 $tipoAsistencia = ($horaAlumno <= $horaLimite) ? "Asistio" : "Tardanza";
 
@@ -73,6 +76,16 @@ try {
                 }
 
             } elseif ($tipoRegistro === 'salida') {
+                $stmt = $this->db->prepare("SELECT COUNT(*) FROM asistencia WHERE idEstudiante = :idEstudiante AND DATE(fechaSalida) = :fecha");
+                $stmt->bindParam(':idEstudiante', $alumnoID);
+                $stmt->bindParam(':fecha', $fecha);
+                $stmt->execute();
+                $count = $stmt->fetchColumn();
+
+                if ($count > 0) {
+                    echo json_encode(["status" => "duplicate", "message" => "Salida ya registrada para esta fecha"]);
+                    return;
+                }
                 // Registrar salida
                 try {
                     $horaSalida = $fecha . ' ' . $hora;
@@ -90,7 +103,8 @@ try {
             }
         }
 
-        public function buscarPorDocumento($documento) {
+        public function buscarPorDocumento($documento)
+        {
             $alumno = $this->alumno->getByDocumento($documento);
             if ($alumno) {
                 echo json_encode(["status" => "success", "data" => $alumno]);

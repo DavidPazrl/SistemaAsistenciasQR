@@ -177,7 +177,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const response = await fetch(BASE_URL + "controllers/ReporteController.php", {
             method: "POST",
-            headers: {"Content-Type": "application/x-www-form-urlencoded"},
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
             body: `grado=${grado}&seccion=${seccion}&periodo=${periodo}`
         });
         const data = await response.json();
@@ -212,16 +212,16 @@ document.addEventListener("DOMContentLoaded", function () {
     // Autocompletar datos al ingresar Documento
     document.getElementById('documento').addEventListener('blur', async () => {
         const documento = document.getElementById('documento').value.trim();
-        if(documento === "") return;
+        if (documento === "") return;
 
         try {
             const response = await fetch(BASE_URL + "controllers/ADDAlumnoController.php", {
                 method: "POST",
-                headers: {"Content-Type": "application/json"},
+                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ action: "buscarDocumento", documento })
             });
             const data = await response.json();
-            if(data.status === "success") {
+            if (data.status === "success") {
                 document.getElementById('nombre').value = data.data.Nombre;
                 document.getElementById('apellidos').value = data.data.Apellidos;
                 document.getElementById('grado').value = data.data.Grado;
