@@ -72,10 +72,14 @@ if (!isset($_SESSION['usuario']) || strtolower($_SESSION['rol']) !== 'encargado'
                         </select>
                     </div>
                     <div class="col-md-3">
-                        <select id="filtroPeriodo" class="form-select">
-                            <option value="semana">Semana</option>
-                            <option value="mes">Mes</option>
-                        </select>
+                        <div class="col-md-3">
+                            <label for="fechaInicio" class="form-label">Desde</label>
+                            <input type="date" id="fechaInicio" class="form-control">
+                        </div>
+                        <div class="col-md-3">
+                            <label for="fechaFin" class="form-label">Hasta</label>
+                            <input type="date" id="fechaFin" class="form-control">
+                        </div>
                     </div>
                     <div class="col-md-3">
                         <button id="btnGenerarReporte" class="btn btn-primary w-100">Generar Reporte</button>

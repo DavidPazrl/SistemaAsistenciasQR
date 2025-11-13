@@ -173,12 +173,13 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("btnGenerarReporte").addEventListener("click", async () => {
         const grado = document.getElementById("filtroGrado").value;
         const seccion = document.getElementById("filtroSeccion").value;
-        const periodo = document.getElementById("filtroPeriodo").value;
+        const fechaInicio = document.getElementById("fechaInicio").value;
+        const fechaFin = document.getElementById("fechaFin").value;
 
         const response = await fetch(BASE_URL + "controllers/ReporteController.php", {
             method: "POST",
             headers: { "Content-Type": "application/x-www-form-urlencoded" },
-            body: `grado=${grado}&seccion=${seccion}&periodo=${periodo}`
+            body: `grado=${grado}&seccion=${seccion}&fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`
         });
         const data = await response.json();
 
@@ -203,9 +204,10 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById('btnExportarExcel').addEventListener('click', () => {
         const grado = document.getElementById('filtroGrado').value;
         const seccion = document.getElementById('filtroSeccion').value;
-        const periodo = document.getElementById('filtroPeriodo').value;
+        const fechaInicio = document.getElementById('fechaInicio').value;
+        const fechaFin = document.getElementById('fechaFin').value;
 
-        const url = `${BASE_URL}controllers/ReporteController.php?accion=exportar&grado=${grado}&seccion=${seccion}&periodo=${periodo}`;
+        const url = `${BASE_URL}controllers/ReporteController.php?accion=exportar&grado=${grado}&seccion=${seccion}&fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`;
         window.location.href = url;
     });
 

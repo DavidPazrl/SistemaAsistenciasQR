@@ -2,7 +2,7 @@
 require_once $_SERVER['DOCUMENT_ROOT'] . '/proyectos/SistemaAsistenciasQR/config.php';
 require_once ROOT . 'models/Reporte.php';
 require_once ROOT . 'config/database.php';
-require_once ROOT . 'vendor/autoload.php'; 
+require_once ROOT . 'vendor/autoload.php';
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
@@ -18,9 +18,15 @@ $reporte = new Reporte($db);
 
 $grado = $_POST['grado'] ?? null;
 $seccion = $_POST['seccion'] ?? null;
-$periodo = $_POST['periodo'] ?? 'semana';
+$fechaInicio = $_POST['fechaInicio'] ?? null;
+$fechaFin = $_POST['fechaFin'] ?? null;
 
-$data = $reporte->getReportes($grado, $seccion, $periodo);
+if ($fechaInicio && $fechaFin) {
+    $data = $reporte->getReportesPorFechas($grado, $seccion, $fechaInicio, $fechaFin);
+} else {
+    $data = $reporte->getReportes($grado, $seccion, "semana"); // valor por defecto
+}
+
 echo json_encode($data);
 
 function exportarExcel()
@@ -34,9 +40,14 @@ function exportarExcel()
 
     $grado = $_GET['grado'] ?? null;
     $seccion = $_GET['seccion'] ?? null;
-    $periodo = $_GET['periodo'] ?? 'semana';
+    $fechaInicio = $_GET['fechaInicio'] ?? null;
+    $fechaFin = $_GET['fechaFin'] ?? null;
 
-    $data = $reporte->getReportes($grado, $seccion, $periodo);
+    if ($fechaInicio && $fechaFin) {
+        $data = $reporte->getReportesPorFechas($grado, $seccion, $fechaInicio, $fechaFin);
+    } else {
+        $data = $reporte->getReportes($grado, $seccion, "semana");
+    }
 
     // Ruta absoluta al archivo
     $inputFileName = ROOT . 'assets/excel/ExcelAsistencias.xlsx';
