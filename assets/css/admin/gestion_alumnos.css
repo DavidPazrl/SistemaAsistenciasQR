@@ -210,3 +210,18 @@ table tbody tr:nth-child(even) {
 .operaciones button:hover {
     color: #007bff;
 }
+
+#mensajeImportacion {
+    font-weight: bold;
+    color: #333;
+}
+
+#tablaNoImportados th, #tablaNoImportados td {
+    border: 1px solid #ccc;
+    padding: 5px;
+    text-align: left;
+}
+
+#tablaNoImportados tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}

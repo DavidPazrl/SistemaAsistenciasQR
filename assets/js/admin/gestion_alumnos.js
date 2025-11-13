@@ -141,7 +141,8 @@ document.addEventListener("DOMContentLoaded", () => {
     inputExcel.addEventListener("change", () => {
         if (inputExcel.files.length > 0) {
             const archivo = inputExcel.files[0];
-            mostrarMensaje("Archivo Seleccionado: " + archivo.name, "blue");
+            mostrarMensaje("Archivo seleccionado: " + archivo.name, "blue");
+
             const formData = new FormData();
             formData.append("action", "importExcel");
             formData.append("file", archivo);
@@ -150,33 +151,74 @@ document.addEventListener("DOMContentLoaded", () => {
                 method: "POST",
                 body: formData
             })
-                .then(res => res.text())
+                .then(res => res.json())
                 .then(data => {
                     console.log("Respuesta del servidor:", data);
 
-                    if (data.startsWith("success")) {
-                        Swal.fire({
-                            title: "Importación exitosa",
-                            text: data,
-                            icon: "success",
-                            confirmButtonText: "OK"
-                        }).then(() => {
-                            location.reload();
-                        });
-                    } else {
+                    if (data.error) {
                         Swal.fire({
                             title: "Error en la importación",
-                            text: data,
+                            text: data.error,
                             icon: "error",
                             confirmButtonText: "Cerrar"
                         });
+                        return;
                     }
+
+                    const totalImportados = data.importados || 0;
+                    const noImportados = data.noImportados || [];
+                    
+                    let htmlMensaje = `<p><strong>${totalImportados}</strong> alumnos importados correctamente.</p>`;
+
+                    if (noImportados.length > 0) {
+                        htmlMensaje += `<p><strong>${noImportados.length} alumnos no importados:</strong></p>`;
+                        htmlMensaje += `<table style="width:100%; border-collapse: collapse;">`;
+                        htmlMensaje += `<thead>
+                                    <tr>
+                                        <th style="border:1px solid #ccc; padding:4px;">Nombre</th>
+                                        <th style="border:1px solid #ccc; padding:4px;">Motivo</th>
+                                    </tr>
+                                </thead>`;
+                        htmlMensaje += `<tbody>`;
+
+                        noImportados.forEach(alumno => {
+                            let detalle = alumno.Motivo;
+
+                            if (alumno.Motivo === "Faltan datos obligatorios") {
+                                const camposFaltantes = [];
+                                if (!alumno.Documento) camposFaltantes.push("Documento");
+                                if (!alumno.Nombre) camposFaltantes.push("Nombre");
+                                if (!alumno.Apellidos) camposFaltantes.push("Apellidos");
+                                if (camposFaltantes.length > 0) {
+                                    detalle += `: ${camposFaltantes.join(", ")}`;
+                                }
+                            }
+
+                            htmlMensaje += `<tr>
+                                        <td style="border:1px solid #ccc; padding:4px;">${alumno.Nombre}</td>
+                                        <td style="border:1px solid #ccc; padding:4px;">${detalle}</td>
+                                    </tr>`;
+                        });
+
+                        htmlMensaje += `</tbody></table>`;
+                    }
+
+                    Swal.fire({
+                        title: "Importación completada",
+                        html: htmlMensaje,
+                        icon: "info",
+                        confirmButtonText: "OK",
+                        width: 600
+                    });
                 })
                 .catch(error => {
-                    mostrarMensaje("Error en la peticion: " + error, "red");
+                    mostrarMensaje("Error en la petición: " + error, "red");
                 });
         }
     });
+
+
+
 
     document.querySelectorAll(".generar-qr").forEach(btn => {
         btn.addEventListener("click", () => {

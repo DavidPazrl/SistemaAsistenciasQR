@@ -86,9 +86,10 @@ class AlumnoController
             $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($filePath);
             $worksheet = $spreadsheet->getActiveSheet();
             $importados = 0;
+            $noImportados = [];
 
-            $gradoTexto = $worksheet->getCell('L8')->getValue(); // O 'M8', depende de cuál uses
-            $seccion = $worksheet->getCell('S8')->getValue(); // O 'U8'
+            $gradoTexto = $worksheet->getCell('L8')->getValue();
+            $seccion = $worksheet->getCell('S8')->getValue(); 
 
             $mapGrado = [
                 'PRIMERO' => 1,
@@ -99,7 +100,7 @@ class AlumnoController
             ];
             $grado = $mapGrado[strtoupper(trim($gradoTexto))] ?? null;
 
-            foreach ($worksheet->getRowIterator(13) as $row) {
+            foreach ($worksheet->getRowIterator(13) as $row) { 
                 $rowIndex = $row->getRowIndex();
 
                 $documento = trim($worksheet->getCell("D{$rowIndex}")->getValue());
@@ -107,27 +108,50 @@ class AlumnoController
                 $apellidoM = trim($worksheet->getCell("M{$rowIndex}")->getValue());
                 $nombre = trim($worksheet->getCell("P{$rowIndex}")->getValue());
 
-                if (!empty($documento) && !empty($nombre)) {
-                    $data = [
+                if (empty($documento) || empty($nombre)) {
+                    $noImportados[] = [
+                        'Fila' => $rowIndex,
+                        'Documento' => $documento,
                         'Nombre' => $nombre,
-                        'Apellidos' => $apellidoP . ' ' . $apellidoM,
-                        'documento' => $documento,
-                        'Grado' => $grado,
-                        'Seccion' => $seccion
+                        'Motivo' => 'Faltan datos obligatorios'
                     ];
+                    continue;
+                }
 
-                    $resultado = $this->store($data);
-                    if ($resultado === "success" || $resultado === "duplicate") {
-                        $importados++;
-                    }
+                $data = [
+                    'Nombre' => $nombre,
+                    'Apellidos' => $apellidoP . ' ' . $apellidoM,
+                    'documento' => $documento,
+                    'Grado' => $grado,
+                    'Seccion' => $seccion
+                ];
+
+                $resultado = $this->store($data);
+
+                if ($resultado === "success") {
+                    $importados++;
+                } elseif ($resultado === "duplicate") {
+                    $noImportados[] = [
+                        'Fila' => $rowIndex,
+                        'Documento' => $documento,
+                        'Nombre' => $nombre,
+                        'Motivo' => 'Duplicado'
+                    ];
                 }
             }
 
-            return "success: " . $importados . " registros importados.";
+            return [
+                'importados' => $importados,
+                'noImportados' => $noImportados
+            ];
+
         } catch (Exception $e) {
-            return "error: " . $e->getMessage();
+            return [
+                'error' => $e->getMessage()
+            ];
         }
     }
+
 
 
     public function generarQR($id)
@@ -182,11 +206,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         case 'importExcel':
             if (isset($_FILES['file']) && $_FILES['file']['error'] === UPLOAD_ERR_OK) {
                 $tmpPath = $_FILES['file']['tmp_name'];
-                echo $controller->importExcel($tmpPath);
+                $result = $controller->importExcel($tmpPath);
+                echo json_encode($result);
             } else {
-                echo "error_subida";
+                echo json_encode(['error' => 'error_subida']);
             }
             break;
+
         case 'generarQR':
             echo $controller->generarQR($_POST['id']);
             break;
