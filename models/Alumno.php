@@ -49,6 +49,10 @@ class Alumno {
 
     //Insertar Alumno
     public function create(){
+        if (empty($this->documento)) {
+            throw new Exception("El documento no puede estar vacio");
+        }
+        
         $query = "CALL insertar_estudiante(:Nombre, :Apellidos, :documento, :Grado, :Seccion, :qr_code)";
         $stmt = $this->conn->prepare($query);
 

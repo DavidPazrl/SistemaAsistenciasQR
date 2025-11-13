@@ -136,7 +136,7 @@ $alumnos = $controller->index($grado, $seccion);
 <script>
     const BASE_URL = "<?= BASE_URL ?>";
 </script>
-<script src="<?php echo BASE_URL; ?>assets/js/admin/gestion_alumnos.js"></script>
+<script src="<?php echo BASE_URL; ?>assets/js/admin/gestion_alumnos.js?v=2"></script>
 <link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/admin/gestion_alumnos.css">
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">

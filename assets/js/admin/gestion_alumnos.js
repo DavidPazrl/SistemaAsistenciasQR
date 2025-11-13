@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
     btnCerrar.addEventListener("click", () => {
         modal.style.display = "none";
     });
-    
+
     form.addEventListener("submit", (e) => {
         e.preventDefault();
         const formData = new FormData(form);
@@ -30,53 +30,65 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         for (let pair of formData.entries()) {
-            console.log(pair[0]+ ': ' + pair[1]);
+            console.log(pair[0] + ': ' + pair[1]);
         }
 
         fetch(BASE_URL + "controllers/AlumnoController.php", {
             method: "POST",
             body: formData
         })
-        .then(res => res.text())
-        .then(data => {
-            console.log("Respuesta del servidor:", data);
-            if (data.trim() === "success"){
-                mostrarMensaje("Alumno Guardado Correctamente","green");
-                setTimeout(() => location.reload(), 1000);
-            } else if (data.trim() === "duplicate"){
-                mostrarMensaje("El Documento ingresado ya existe", "red");
-            } else {
-                mostrarMensaje("Error al guardar el alumno", "red");
-            }
-        })
-        .catch(() => {
-            mostrarMensaje("Error en la petición", "red");
-        });
+            .then(res => res.text())
+            .then(data => {
+                console.log("Respuesta del servidor:", data);
+                if (data.trim() === "success") {
+                    mostrarMensaje("Alumno Guardado Correctamente", "green");
+                    setTimeout(() => location.reload(), 1000);
+                } else if (data.trim() === "duplicate") {
+                    mostrarMensaje("El Documento ingresado ya existe", "red");
+                } else {
+                    mostrarMensaje("Error al guardar el alumno", "red");
+                }
+            })
+            .catch(() => {
+                mostrarMensaje("Error en la petición", "red");
+            });
     });
 
 
     document.querySelectorAll(".editar").forEach(btn => {
         btn.addEventListener("click", () => {
             const fila = btn.closest("tr");
+
             const id = btn.dataset.id;
-            const nombre = fila.children[1].textContent;
-            const apellidos = fila.children[2].textContent;
-            const documento = fila.children[3].textContent;
-            const grado = fila.children[4].textContent;
-            const seccion = fila.children[5].textContent;
+            const nombre = fila.children[0].textContent.trim();
+            const apellidos = fila.children[1].textContent.trim();
+            const documento = fila.children[2].textContent.trim();
+            const grado = fila.children[3].textContent.trim();
+            const seccion = fila.children[4].textContent.trim();
+
+            const inputId = form.querySelector("#idEstudiante");
+            const inputNombre = form.elements["Nombre"];
+            const inputApellidos = form.elements["Apellidos"];
+            const inputDocumento = form.elements["documento"];
+            const inputGrado = form.elements["Grado"];
+            const inputSeccion = form.elements["Seccion"];
+
+            inputId.value = id;
+            inputNombre.value = nombre;
+            inputApellidos.value = apellidos;
+            inputDocumento.value = documento;
+            inputGrado.value = grado;
+            inputSeccion.value = seccion;
+
+            inputDocumento.readOnly = true;
 
             modalTitulo.textContent = "Editar Alumno";
-            form.idEstudiante.value = id;
-            form.Nombre.value = nombre;
-            form.Apellidos.value = apellidos;
-            form.documento.value = documento;
-            form.Grado.value = grado;
-            form.Seccion.value = seccion;
             form.dataset.action = "update";
-
             modal.style.display = "flex";
         });
     });
+
+
 
     document.querySelectorAll(".eliminar").forEach(btn => {
         btn.addEventListener("click", () => {
@@ -91,7 +103,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 confirmButtonText: "Sí, eliminar",
                 cancelButtonText: "Cancelar"
             }).then((result) => {
-                if (result.isConfirmed){
+                if (result.isConfirmed) {
                     const formData = new FormData();
                     formData.append("action", "delete");
                     formData.append("id", id);
@@ -99,35 +111,35 @@ document.addEventListener("DOMContentLoaded", () => {
                         method: "POST",
                         body: formData
                     })
-                    .then(res => res.text())
-                    .then(data => {
-                        if (data.trim() === "success"){
-                            Swal.fire(
-                                "Eliminado",
-                                "El alumno ha sido eliminado correctamente",
-                                "success"
-                            );
-                            setTimeout(() => location.reload(), 1000);
-                        } else {
-                            Swal.fire(
-                                "Error",
-                                "No se pudo eliminar el alumno",
-                                "error"
-                            );
-                        }
-                    })        
+                        .then(res => res.text())
+                        .then(data => {
+                            if (data.trim() === "success") {
+                                Swal.fire(
+                                    "Eliminado",
+                                    "El alumno ha sido eliminado correctamente",
+                                    "success"
+                                );
+                                setTimeout(() => location.reload(), 1000);
+                            } else {
+                                Swal.fire(
+                                    "Error",
+                                    "No se pudo eliminar el alumno",
+                                    "error"
+                                );
+                            }
+                        })
                 }
             });
-        });       
+        });
     });
 
     //Importacion de Excel
-    document.getElementById("btn-importar").addEventListener("click",() => {
+    document.getElementById("btn-importar").addEventListener("click", () => {
         inputExcel.click();
     });
 
     inputExcel.addEventListener("change", () => {
-        if (inputExcel.files.length > 0){
+        if (inputExcel.files.length > 0) {
             const archivo = inputExcel.files[0];
             mostrarMensaje("Archivo Seleccionado: " + archivo.name, "blue");
             const formData = new FormData();
@@ -138,31 +150,31 @@ document.addEventListener("DOMContentLoaded", () => {
                 method: "POST",
                 body: formData
             })
-            .then(res => res.text())
-            .then(data => {
-                console.log("Respuesta del servidor:", data);
+                .then(res => res.text())
+                .then(data => {
+                    console.log("Respuesta del servidor:", data);
 
-                if (data.startsWith("success")) {
-                    Swal.fire({
-                        title: "Importación exitosa",
-                        text: data, 
-                        icon: "success",
-                        confirmButtonText: "OK"
-                    }).then(() => {
-                        location.reload(); 
-                    });
-                } else {
-                    Swal.fire({
-                        title: "Error en la importación",
-                        text: data,
-                        icon: "error",
-                        confirmButtonText: "Cerrar"
-                    });
-                }
-            })
-            .catch(error => {
-                mostrarMensaje("Error en la peticion: "+ error, "red");
-            });
+                    if (data.startsWith("success")) {
+                        Swal.fire({
+                            title: "Importación exitosa",
+                            text: data,
+                            icon: "success",
+                            confirmButtonText: "OK"
+                        }).then(() => {
+                            location.reload();
+                        });
+                    } else {
+                        Swal.fire({
+                            title: "Error en la importación",
+                            text: data,
+                            icon: "error",
+                            confirmButtonText: "Cerrar"
+                        });
+                    }
+                })
+                .catch(error => {
+                    mostrarMensaje("Error en la peticion: " + error, "red");
+                });
         }
     });
 
@@ -177,18 +189,18 @@ document.addEventListener("DOMContentLoaded", () => {
                 method: "POST",
                 body: formData
             })
-            .then(res => res.text())
-            .then(data => {
-                if (data.startsWith("success")) {
-                    Swal.fire({
-                        title: "QR generado",
-                        icon: "success",
-                        confirmButtonText: "Ok"
-                    }).then(() => location.reload());
-                } else {
-                    Swal.fire("Error", data, "error");
-                }
-            });
+                .then(res => res.text())
+                .then(data => {
+                    if (data.startsWith("success")) {
+                        Swal.fire({
+                            title: "QR generado",
+                            icon: "success",
+                            confirmButtonText: "Ok"
+                        }).then(() => location.reload());
+                    } else {
+                        Swal.fire("Error", data, "error");
+                    }
+                });
         });
     });
 
@@ -220,7 +232,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    function mostrarMensaje(texto, color){
+    function mostrarMensaje(texto, color) {
         mensaje.style.color = color;
         mensaje.innerText = texto;
     }

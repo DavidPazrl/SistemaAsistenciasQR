@@ -1,6 +1,4 @@
-create database AsistenciaQRDemo001;
-use AsistenciaQRDemo001;
-
+-- Base de datos : AsistenciaQRDemo001
 
 CREATE TABLE estudiante(
     idEstudiante INT PRIMARY KEY AUTO_INCREMENT,
@@ -37,18 +35,18 @@ DELIMITER $$
 CREATE PROCEDURE insertar_estudiante (
     IN pNombre VARCHAR(100),
     IN pApellidos VARCHAR(100),
-    IN pDNI CHAR(8),
+    IN pDocumento CHAR(15),
     IN pGrado INT,
     IN pSeccion VARCHAR(5),
     IN pqr_code VARCHAR(50)
 )
 BEGIN
-    IF EXISTS (SELECT 1 FROM estudiante WHERE DNI = pDNI) THEN
+    IF EXISTS (SELECT 1 FROM estudiante WHERE documento = pDocumento) THEN
         SIGNAL SQLSTATE '45000' 
-        SET MESSAGE_TEXT = 'DNI duplicado';
+        SET MESSAGE_TEXT = 'Documento duplicado';
     ELSE
-        INSERT INTO estudiante (Nombre, Apellidos, DNI, Grado, Seccion, qr_code)
-        VALUES (pNombre, pApellidos, pDNI, pGrado, pSeccion, pqr_code);
+        INSERT INTO estudiante (Nombre, Apellidos, documento, Grado, Seccion, qr_code)
+        VALUES (pNombre, pApellidos, pDocumento, pGrado, pSeccion, pqr_code);
     END IF;
 END$$
 DELIMITER ;
