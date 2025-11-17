@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", function () {
         toggle.style.left = sidebar.classList.contains("active") ? "250px" : "15px";
     });
 
-    // Cámara
+    // Camara
     async function iniciarCamara() {
         if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
             try {
