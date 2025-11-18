@@ -33,7 +33,7 @@ if (isset($_SESSION['usuario'])){
     <div class="bg-white/40 backdrop-blur-xl p-8 rounded-[2.5rem] shadow-xl w-96 border border-white/20">
         <h2 class="text-2xl font-bold mb-4 text-center text-red-500" style="font-family: 'Cabo Soft', sans-serif;">
     Iniciar Sesion
-</h2>
+    </h2>
 
 
         <?php if (isset($_GET['error'])): ?>
@@ -92,43 +92,54 @@ if (isset($_SESSION['usuario'])){
 
 
 
-<!-- SLIDER INFINITO SIN ESPACIOS NEGROS -->
+<!-- SLIDER RESPONSIVE INFINITO -->
 <div class="absolute inset-0 overflow-hidden">
     <div class="continuous-slider">
-        <img src="../../assets/img/imagen0.jpeg" class="slide-img">
+        
+        <!-- 8 imágenes originales -->
+        <img src="../../assets/img/imagen3.jpeg" class="slide-img">
         <img src="../../assets/img/imagen1.jpeg" class="slide-img">
         <img src="../../assets/img/imagen2.jpeg" class="slide-img">
-        <img src="../../assets/img/imagen3.jpeg" class="slide-img">
+        <img src="../../assets/img/imagen4.jpeg" class="slide-img">
+        <img src="../../assets/img/imagen5.jpeg" class="slide-img">
+        <img src="../../assets/img/imagen6.jpeg" class="slide-img">
+        <img src="../../assets/img/imagen7.jpeg" class="slide-img">
+        <img src="../../assets/img/imagen8.jpeg" class="slide-img">
 
-        <!-- Copias para loop infinito -->
-        <img src="../../assets/img/imagen0.jpeg" class="slide-img">
+        <!-- Copias -->
+        <img src="../../assets/img/imagen3.jpeg" class="slide-img">
         <img src="../../assets/img/imagen1.jpeg" class="slide-img">
         <img src="../../assets/img/imagen2.jpeg" class="slide-img">
-        <img src="../../assets/img/imagen3.jpeg" class="slide-img">
+        <img src="../../assets/img/imagen4.jpeg" class="slide-img">
+        <img src="../../assets/img/imagen5.jpeg" class="slide-img">
+        <img src="../../assets/img/imagen6.jpeg" class="slide-img">
+        <img src="../../assets/img/imagen7.jpeg" class="slide-img">
+        <img src="../../assets/img/imagen8.jpeg" class="slide-img">
+
     </div>
 </div>
 
 <style>
     .continuous-slider {
-        position: absolute;
-        inset: 0;
         display: flex;
-        width: 600%; /* 6 imágenes */
         height: 100%;
-        animation: slide 30s linear infinite;
+        animation: slide 40s linear infinite;
     }
 
     .slide-img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover; /* 🔥 SIN ESPACIOS NEGROS */
+        min-width: 100vw;   /* 🔥 Cada imagen ocupa SIEMPRE el ancho real de la pantalla */
+        height: 100vh;
+        object-fit: cover;
+        flex-shrink: 0;     /* 🔥 Nunca se aplastan */
     }
 
+    /* Mover todas las imagenes exactas sin importar el viewport */
     @keyframes slide {
-        0% { transform: translateX(0); }
-        100% { transform: translateX(-50%); }
+        0%   { transform: translateX(0); }
+        100% { transform: translateX(-800vw); } /* 8 imágenes originales */
     }
 </style>
+
 
 
 
