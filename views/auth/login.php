@@ -75,7 +75,7 @@ if (isset($_SESSION['usuario'])){
        <div class="flex justify-center">
     <button type="submit"
  
-    class="px-8 py-1.5 rounded-full font-semibold text-white text-sm
+    class="px-8 py-1.5 rounded-full text-white text-sm
     bg-gradient-to-r from-orange-400 to-red-500
     hover:from-orange-500 hover:to-red-600
     transition-all duration-300 shadow">
