@@ -6,7 +6,7 @@ if (session_status() === PHP_SESSION_NONE) {
 require_once $_SERVER['DOCUMENT_ROOT'] . '/proyectos/SistemaAsistenciasQR/config.php';
 require_once ROOT . 'config/database.php';
 require_once ROOT . 'models/Alumno.php';
-
+require_once ROOT . 'models/Asistencia.php';
 class AlumnoController
 {
     private $db;
@@ -89,7 +89,7 @@ class AlumnoController
             $noImportados = [];
 
             $gradoTexto = $worksheet->getCell('L8')->getValue();
-            $seccion = $worksheet->getCell('S8')->getValue(); 
+            $seccion = $worksheet->getCell('S8')->getValue();
 
             $mapGrado = [
                 'PRIMERO' => 1,
@@ -100,7 +100,7 @@ class AlumnoController
             ];
             $grado = $mapGrado[strtoupper(trim($gradoTexto))] ?? null;
 
-            foreach ($worksheet->getRowIterator(13) as $row) { 
+            foreach ($worksheet->getRowIterator(13) as $row) {
                 $rowIndex = $row->getRowIndex();
 
                 $documento = trim($worksheet->getCell("D{$rowIndex}")->getValue());
@@ -178,6 +178,20 @@ class AlumnoController
         return "success";
     }
 
+    public function getHistorial()
+    {
+        $asistencia = new Asistencia($this->db);
+        $stmt = $asistencia->getHist();
+
+        $historial = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        echo json_encode([
+            "status" => "success",
+            "data" => $historial
+        ]);
+    }
+
+
 
 }
 
@@ -212,9 +226,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 echo json_encode(['error' => 'error_subida']);
             }
             break;
-
         case 'generarQR':
             echo $controller->generarQR($_POST['id']);
+            break;
+        case 'getHistorial':
+            $controller->getHistorial();
             break;
         default:
             echo "invalid_action";

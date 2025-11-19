@@ -47,6 +47,27 @@ if (!isset($_SESSION['usuario']) || strtolower($_SESSION['rol']) !== 'encargado'
                 <video id="camera" autoplay playsinline muted></video>
                 <canvas id="canvas" hidden></canvas>
             </div>
+            <!-- Historial de ingresos -->
+            <div class="container mt-4">
+                <h3 class="text-center">Historial Reciente</h3>
+
+                <div class="table-responsive mt-3">
+                    <table class="table table-striped table-bordered" id="tablaHistorial">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Apellidos</th>
+                                <th>Fecha Entrada</th>
+                                <th>Método</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
         </div>
         <div id="reportes" style="display:none;">
             <h2 class="text-center mt-4">Sección de Reportes</h2>

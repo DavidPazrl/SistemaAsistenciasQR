@@ -16,6 +16,51 @@ document.addEventListener("DOMContentLoaded", function () {
     let scanning = false;
     let stream = null;
 
+    function agregarAlHistorial(alumno, metodo) {
+        const tbody = document.querySelector("#tablaHistorial tbody");
+        const tr = document.createElement("tr");
+
+        const ahora = new Date();
+        const fechaHora = `${ahora.toLocaleDateString('es-PE')} ${ahora.toLocaleTimeString('es-PE')}`;
+
+        tr.innerHTML = `
+        <td>${alumno.Nombre}</td>
+        <td>${alumno.Apellidos}</td>
+        <td>${fechaHora}</td>
+        <td>${metodo}</td>
+    `;
+
+        tbody.insertBefore(tr, tbody.firstChild);
+    }
+    async function cargarHistorial() {
+        try {
+            const response = await fetch(BASE_URL + "controllers/AlumnoController.php", {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: "action=getHistorial"
+            });
+            const result = await response.json();
+
+            if (result.status === "success") {
+                const tbody = document.querySelector("#tablaHistorial tbody");
+                tbody.innerHTML = "";
+
+                result.data.forEach(registro => {
+                    const tr = document.createElement("tr");
+                    tr.innerHTML = `
+                    <td>${registro.nombre}</td>
+                    <td>${registro.apellidos}</td>
+                    <td>${registro.fecha}</td>
+                    <td>${registro.metodo}</td>
+                `;
+                    tbody.appendChild(tr);
+                });
+            }
+        } catch (error) {
+            console.error("Error cargando historial:", error);
+        }
+    }
+
     // Control del menu
     toggle.addEventListener("click", () => {
         sidebar.classList.toggle("active");
@@ -93,6 +138,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         document.getElementById("overlay").style.display = "block";
         document.getElementById("carnet").style.display = "flex";
+        agregarAlHistorial(alumno, 'QR');
 
         setTimeout(() => {
             document.getElementById("overlay").style.display = "none";
@@ -153,6 +199,13 @@ document.addEventListener("DOMContentLoaded", function () {
             if (result.status === "success") {
                 mensajeAgregar.className = "alert alert-success text-center";
                 mensajeAgregar.textContent = result.message;
+
+                const alumnoData = {
+                    Nombre: document.getElementById('nombre').value,
+                    Apellidos: document.getElementById('apellidos').value
+                };
+                agregarAlHistorial(alumnoData, 'Manual');
+
                 formAgregarAlumno.reset();
             } else {
                 mensajeAgregar.className = "alert alert-danger text-center";
@@ -238,6 +291,6 @@ document.addEventListener("DOMContentLoaded", function () {
             console.error("Error buscando alumno:", e);
         }
     });
-
+    cargarHistorial();
     iniciarCamara();
 });

@@ -6,6 +6,7 @@ if (session_status() === PHP_SESSION_NONE) {
 require_once $_SERVER['DOCUMENT_ROOT'] . '/proyectos/SistemaAsistenciasQR/config.php';
 require_once ROOT . 'config/database.php';
 require_once ROOT . 'models/Alumno.php';
+require_once ROOT . 'models/Asistencia.php';
 
 header('Content-Type: application/json');
 
@@ -15,12 +16,14 @@ try {
     {
         private $db;
         private $alumno;
+        private $asistencia;
 
         public function __construct()
         {
             $database = new Database();
             $this->db = $database->getConnection();
             $this->alumno = new Alumno($this->db);
+            $this->asistencia = new Asistencia($this->db);
         }
 
         // Registrar asistencia segun tipo
@@ -65,7 +68,7 @@ try {
 
                 // Registrar entrada
                 try {
-                    $this->alumno->registrarAsistencia($alumnoID, $fecha . ' ' . $hora, $idPersonal, $tipoAsistencia);
+                    $this->asistencia->registrarAsistencia($alumnoID, $fecha . ' ' . $hora, $idPersonal, $tipoAsistencia);
                     echo json_encode(["status" => "success", "message" => "Entrada registrada correctamente"]);
                 } catch (PDOException $e) {
                     echo json_encode([
@@ -89,7 +92,7 @@ try {
                 // Registrar salida
                 try {
                     $horaSalida = $fecha . ' ' . $hora;
-                    $this->alumno->registrarSalida($alumnoID, $horaSalida);
+                    $this->asistencia->registrarSalida($alumnoID, $horaSalida);
                     echo json_encode(["status" => "success", "message" => "Salida registrada correctamente"]);
                 } catch (PDOException $e) {
                     echo json_encode([

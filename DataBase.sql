@@ -26,6 +26,7 @@ CREATE TABLE asistencia (
     fechaEntrada DATETIME DEFAULT CURRENT_TIMESTAMP,
     fechaSalida DATETIME NULL,
     tipoAsistencia ENUM('Asistio','Falto','Tardanza','Falta justificada','Tardanza justificada') DEFAULT 'Asistio',
+    metodo VARCHAR(20) DEFAULT 'camara',
     FOREIGN KEY (idEstudiante) REFERENCES estudiante(idEstudiante),
     FOREIGN KEY (idPersonal) REFERENCES personal(idPersonal)
 );
