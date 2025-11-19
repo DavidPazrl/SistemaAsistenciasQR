@@ -6,104 +6,169 @@ $controller = new AdminController();
 $admins = $controller->index();
 ?>
 
-<div class="contenedor-admin">
-    <h2 class="titulo-seccion">
-        <i class="fa-solid fa-users-gear"></i> Gestión de Admins
-    </h2>
+<!-- Tailwind -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<link href="https://fonts.cdnfonts.com/css/cabo-soft" rel="stylesheet">
+
+<!-- JS Personal -->
+<script>
+    const BASE_URL = "<?= BASE_URL ?>";
+</script>
+<script src="<?= BASE_URL ?>assets/js/admin/gestion_admin.js"></script>
+
+
+
+<div class="p-6">
+
+    <!-- TÍTULO -->
     
-    <!-- Boton agregar -->
-    <div class="acciones">
-        <button id="btn-agregar" class="btn-agregar">
-            <i class="fa-solid fa-user-plus"></i> Agregar Admin
-        </button>
+
+  <h2 class="text-4xl font-bold mb-6 flex items-center justify-center gap-3 text-red-500"
+    style="font-family: 'Cabo Soft', sans-serif; 
+           text-shadow: 0 0 8px rgba(255, 50, 50, 0.6);">  
+    <i class="fa-solid fa-users-gear text-red-600 drop-shadow-[0_0_6px_rgba(255,0,0,0.6)]"></i>
+    Gestion de Administradores
+</h2>
+
+
+    <!-- BOTÓN AGREGAR -->
+   <div class="mb-4 flex justify-end">
+    <button id="btn-agregar"
+        class="flex items-center gap-2 px-6 py-2 rounded-full
+               font-['Cabo Soft'] text-sm text-white
+               bg-gradient-to-r from-orange-400 to-red-500
+               hover:from-orange-500 hover:to-red-600
+               transition-all duration-300 shadow-md">
+        <i class="fa-solid fa-user-plus"></i>
+        Agregar Admin
+    </button>
     </div>
 
-    <!-- Mensaje -->
-    <div id="mensaje" class="mensaje"></div>
 
-    <!-- Tabla de admin -->
-    <div class="tabla-contenedor">
-        <table id="tabla-admin">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Nombre</th>
-                    <th>Apellido</th>
-                    <th>Usuario</th>
-                    <th>Rol</th>
-                    <th>Operaciones</th>
-                </tr>
-            </thead>
-            <tbody>
+    <!-- MENSAJE -->
+    <div id="mensaje" class="mb-4"></div>
+
+    <!-- TABLA -->
+    <div class="overflow-x-auto bg-white shadow-lg rounded-xl border border-gray-200">
+        <table id="tabla-admin" class="min-w-full text-left">
+            <thead class="bg-gradient-to-r from-orange-400 to-red-500 text-white uppercase text-sm font-ultralight">
+    <tr>
+        <th class="px-4 py-3">#</th>
+        <th class="px-4 py-3">Nombre</th>
+        <th class="px-4 py-3">Apellido</th>
+        <th class="px-4 py-3">Usuario</th>
+        <th class="px-4 py-3">Rol</th>
+        <th class="px-4 py-3 text-center">Operaciones</th>
+    </tr>
+</thead>
+
+
+            <tbody class="text-gray-800">
                 <?php 
                 $i = 1;
                 while ($row = $admins->fetch(PDO::FETCH_ASSOC)): ?>
-                    <tr>
-                        <td><?= $i++; ?></td>
-                        <td><?= htmlspecialchars($row['Nombre']); ?></td>
-                        <td><?= htmlspecialchars($row['Apellido']); ?></td>
-                        <td><?= htmlspecialchars($row['usuario']); ?></td>
-                        <td><?= htmlspecialchars($row['rol']); ?></td>
-                        <td class="operaciones">
-                            <button class="editar" 
+                    <tr class="border-b hover:bg-gray-50 transition">
+                        <td class="px-4 py-3"><?= $i++; ?></td>
+                        <td class="px-4 py-3"><?= htmlspecialchars($row['Nombre']); ?></td>
+                        <td class="px-4 py-3"><?= htmlspecialchars($row['Apellido']); ?></td>
+                        <td class="px-4 py-3"><?= htmlspecialchars($row['usuario']); ?></td>
+                        <td class="px-4 py-3"><?= htmlspecialchars($row['rol']); ?></td>
+
+                        <!-- BOTONES -->
+                        <td class="px-4 py-3 flex justify-center gap-2">
+
+                            <!-- Editar -->
+                            <button class="editar text-orange-600 hover:text-orange-700 transition"
                                 data-id="<?= $row['idPersonal']; ?>"
                                 data-nombre="<?= htmlspecialchars($row['Nombre']); ?>"
                                 data-apellido="<?= htmlspecialchars($row['Apellido']); ?>"
                                 data-usuario="<?= htmlspecialchars($row['usuario']); ?>"
                                 data-rol="<?= htmlspecialchars($row['rol']); ?>"
                                 title="Editar">
-                                <i class="fa-solid fa-pen-to-square"></i>
+                                <i class="fa-solid fa-pen-to-square text-lg"></i>
                             </button>
-                            <button class="eliminar" 
-                                data-id="<?= $row['idPersonal']; ?>" 
+
+                            <!-- Eliminar -->
+                            <button class="eliminar text-red-600 hover:text-red-700 transition"
+                                data-id="<?= $row['idPersonal']; ?>"
                                 title="Eliminar">
-                                <i class="fa-solid fa-trash"></i>
+                                <i class="fa-solid fa-trash text-lg"></i>
                             </button>
+
                         </td>
                     </tr>
                 <?php endwhile; ?>
             </tbody>
+
         </table>
     </div>
 </div>
 
-<!-- Modal para agregar/editar Admin -->
-<div id="modal-admin" class="modal">
-    <div class="modal-contenido">
-        <h3 id="modal-titulo">
-            <i class="fa-solid fa-user-pen"></i> Agregar Admin
+<!-- MODAL -->
+<div id="modal-admin"
+    class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+
+    <div class="bg-white w-full max-w-md p-6 rounded-xl shadow-xl">
+
+        <h3 id="modal-titulo" class="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+            <i class="fa-solid fa-user-pen text-blue-600"></i>
+            Agregar Admin
         </h3>
-        <form id="form-admin">
+
+        <form id="form-admin" class="space-y-4">
             <input type="hidden" name="idPersonal" id="idPersonal">
 
-            <label for="nombre">Nombre:</label>
-            <input type="text" name="nombre" id="nombre" required>
+            <div>
+                <label for="nombre" class="block font-medium">Nombre:</label>
+                <input type="text" id="nombre" name="nombre" required
+                    class="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-500">
+            </div>
 
-            <label for="apellido">Apellido:</label>
-            <input type="text" name="apellido" id="apellido" required>
+            <div>
+                <label for="apellido" class="block font-medium">Apellido:</label>
+                <input type="text" id="apellido" name="apellido" required
+                    class="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-500">
+            </div>
 
-            <label for="usuario">Usuario:</label>
-            <input type="text" name="usuario" id="usuario" maxlength="20" required>
+            <div>
+                <label for="usuario" class="block font-medium">Usuario:</label>
+                <input type="text" id="usuario" name="usuario" maxlength="20" required
+                    class="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-500">
+            </div>
 
-            <label for="contraseña">Contraseña:</label>
-            <input type="password" name="contrasena" id="contrasena" minlength="4">
+            <div>
+                <label for="contrasena" class="block font-medium">Contraseña:</label>
+                <input type="password" id="contrasena" name="contrasena" minlength="4"
+                    class="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-500">
+            </div>
 
-            <label for="rol">Rol:</label>
-            <input type="text" name="rol" id="rol" placeholder="Admin" required>
+            <div>
+                <label for="rol" class="block font-medium">Rol:</label>
+                <input type="text" id="rol" name="rol" required placeholder="Admin"
+                    class="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-500">
+            </div>
 
-            <div class="modal-botones">
-                <button type="submit" id="btn-guardar" class="btn-guardar">Guardar</button>
-                <button type="button" id="btn-cerrar" class="btn-cerrar">Cancelar</button>
+            <!-- BOTONES -->
+            <div class="flex justify-end gap-3 pt-4">
+                <button type="button" id="btn-cerrar"
+                    class="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded-lg">
+                    Cancelar
+                </button>
+
+                <button type="submit" id="btn-guardar"
+                    class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg">
+                    Guardar
+                </button>
             </div>
         </form>
+
     </div>
 </div>
 
-<script>
-    const BASE_URL = "<?= BASE_URL ?>";
-</script>
-<script src="<?= BASE_URL ?>assets/js/admin/gestion_admin.js"></script>
-<link rel="stylesheet" href="<?= BASE_URL ?>assets/css/admin/gestion_admin.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
 
