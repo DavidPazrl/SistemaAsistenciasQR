@@ -47,6 +47,12 @@ if (!isset($_SESSION['usuario']) || strtolower($_SESSION['rol']) !== 'encargado'
                 <video id="camera" autoplay playsinline muted></video>
                 <canvas id="canvas" hidden></canvas>
             </div>
+            <!-- Input para lector 2D -->
+            <div class="scanner-input-container mt-3">
+                <label for="scannerInput" class="form-label">O escanea con lector externo:</label>
+                <input type="text" id="scannerInput" class="form-control"
+                    placeholder="Enfoca aquí y escanea con el lector..." autocomplete="off">
+            </div>
             <!-- Historial de ingresos -->
             <div class="container mt-4">
                 <h3 class="text-center">Historial Reciente</h3>
@@ -62,12 +68,17 @@ if (!isset($_SESSION['usuario']) || strtolower($_SESSION['rol']) !== 'encargado'
                             </tr>
                         </thead>
                         <tbody>
-                            
+
                         </tbody>
                     </table>
                 </div>
             </div>
-
+            <div class="container mt-4 text-center">
+                <button id="btnMarcarFaltas" class="btn btn-danger btn-lg">
+                    Marcar Faltas del Día
+                </button>
+                <div id="mensajeFaltas" class="alert mt-3" style="display:none;"></div>
+            </div>
         </div>
         <div id="reportes" style="display:none;">
             <h2 class="text-center mt-4">Sección de Reportes</h2>

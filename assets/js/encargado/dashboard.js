@@ -32,6 +32,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         tbody.insertBefore(tr, tbody.firstChild);
     }
+
     async function cargarHistorial() {
         try {
             const response = await fetch(BASE_URL + "controllers/AlumnoController.php", {
@@ -101,23 +102,23 @@ document.addEventListener("DOMContentLoaded", function () {
 
             if (code && !scanning) {
                 scanning = true;
-                handleQRDetected(code.data);
+                handleQRDetected(code.data, 'Cámara');
             }
         }
         if (stream) requestAnimationFrame(tick);
     }
 
-    async function handleQRDetected(qrValue) {
+    async function handleQRDetected(qrValue, metodo = 'Cámara') {
         mensaje.style.display = "block";
         mensaje.textContent = "Buscando alumno...";
         try {
             const response = await fetch(BASE_URL + "controllers/VerificarQRController.php", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ qr: qrValue })
+                body: JSON.stringify({ qr: qrValue, metodo: metodo })
             });
             const data = await response.json();
-            if (data.status === "success") mostrarCarnet(data.data);
+            if (data.status === "success") mostrarCarnet(data.data, metodo);
             else {
                 mensaje.textContent = "Alumno no encontrado";
                 setTimeout(() => { mensaje.style.display = "none"; scanning = false; }, 2000);
@@ -128,7 +129,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    function mostrarCarnet(alumno) {
+    function mostrarCarnet(alumno, metodo = 'Cámara') {
         mensaje.style.display = "none";
         document.getElementById("fotoAlumno").src = BASE_URL + "assets/img/fotodefecto.png";
         document.getElementById("nombreAlumno").textContent = `${alumno.Nombre} ${alumno.Apellidos}`;
@@ -138,13 +139,30 @@ document.addEventListener("DOMContentLoaded", function () {
 
         document.getElementById("overlay").style.display = "block";
         document.getElementById("carnet").style.display = "flex";
-        agregarAlHistorial(alumno, 'QR');
+        agregarAlHistorial(alumno, metodo);
 
         setTimeout(() => {
             document.getElementById("overlay").style.display = "none";
             document.getElementById("carnet").style.display = "none";
             scanning = false;
         }, 3000);
+    }
+
+    // Detectar escaneo desde lector 2D
+    const scannerInput = document.getElementById('scannerInput');
+
+    if (scannerInput) {
+        scannerInput.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                const qrValue = scannerInput.value.trim();
+
+                if (qrValue) {
+                    handleQRDetected(qrValue, 'Escáner');
+                    scannerInput.value = '';
+                }
+            }
+        });
     }
 
     // Mostrar secciones
@@ -160,6 +178,10 @@ document.addEventListener("DOMContentLoaded", function () {
         agregarAlumno.style.display = "none";
         inicio.style.display = "block";
         iniciarCamara();
+        setTimeout(() => {
+            const scannerInput = document.getElementById('scannerInput');
+            if (scannerInput) scannerInput.focus();
+        }, 200);
     });
 
     btnAgregarAlumno.addEventListener('click', () => {
@@ -291,6 +313,53 @@ document.addEventListener("DOMContentLoaded", function () {
             console.error("Error buscando alumno:", e);
         }
     });
+
+    // Marcar faltas del día
+    document.getElementById('btnMarcarFaltas')?.addEventListener('click', async () => {
+        if (!confirm('¿Estás seguro de marcar las faltas del día?\n\nEsto registrará como "Falto" a todos los alumnos que no marcaron asistencia hoy.\n\nEsta acción NO se puede deshacer.')) {
+            return;
+        }
+
+        const btnMarcarFaltas = document.getElementById('btnMarcarFaltas');
+        const mensajeFaltas = document.getElementById('mensajeFaltas');
+
+        btnMarcarFaltas.disabled = true;
+        btnMarcarFaltas.textContent = 'Procesando...';
+
+        try {
+            const response = await fetch(BASE_URL + 'controllers/MarcarFaltasController.php', {
+                method: 'POST'
+            });
+            const result = await response.json();
+
+            mensajeFaltas.style.display = 'block';
+
+            if (result.status === 'success') {
+                mensajeFaltas.className = 'alert alert-success mt-3';
+                mensajeFaltas.textContent = `${result.message}`;
+
+                // Recargar historial para ver las faltas
+                cargarHistorial();
+            } else {
+                mensajeFaltas.className = 'alert alert-danger mt-3';
+                mensajeFaltas.textContent = `${result.message}`;
+            }
+
+            setTimeout(() => {
+                mensajeFaltas.style.display = 'none';
+            }, 5000);
+
+        } catch (error) {
+            console.error('Error:', error);
+            mensajeFaltas.style.display = 'block';
+            mensajeFaltas.className = 'alert alert-danger mt-3';
+            mensajeFaltas.textContent = 'Error al marcar faltas';
+        } finally {
+            btnMarcarFaltas.disabled = false;
+            btnMarcarFaltas.textContent = 'Marcar Faltas del Día';
+        }
+    });
+
     cargarHistorial();
     iniciarCamara();
 });

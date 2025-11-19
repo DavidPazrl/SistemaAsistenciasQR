@@ -2,6 +2,7 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
+date_default_timezone_set("America/Lima");
 
 require_once $_SERVER['DOCUMENT_ROOT'] . '/proyectos/SistemaAsistenciasQR/config.php';
 require_once ROOT . 'config/database.php';
@@ -10,6 +11,7 @@ header('Content-Type: application/json; charset=utf-8');
 
 $input = json_decode(file_get_contents("php://input"), true);
 $qr = isset($input['qr']) ? trim($input['qr']) : '';
+$metodo = isset($input['metodo']) ? trim($input['metodo']) : 'Cámara';
 
 if (empty($qr)) {
     echo json_encode(['status' => 'error', 'message' => 'No se envió el código QR']);
@@ -40,7 +42,8 @@ try {
         $s2 = $db->prepare($q2);
         $s2->execute([$_SESSION['usuario']]);
         $r2 = $s2->fetch(PDO::FETCH_ASSOC);
-        if ($r2) $idPersonal = $r2['idPersonal'];
+        if ($r2)
+            $idPersonal = $r2['idPersonal'];
     }
     $qCheck = "SELECT * 
                FROM asistencia 
@@ -53,15 +56,15 @@ try {
 
     // Controlar la hora
     $horaActual = date('H:i:s');
-    $horaLimite = '08:05:00'; 
+    $horaLimite = '08:05:00';
 
     if (!$registro) {
         $tipoAsistencia = ($horaActual <= $horaLimite) ? 'Asistio' : 'Tardanza';
 
-        $insert = "INSERT INTO asistencia (idEstudiante, idPersonal, fechaEntrada, tipoAsistencia)
-                   VALUES (?, ?, NOW(), ?)";
+        $insert = "INSERT INTO asistencia (idEstudiante, idPersonal, fechaEntrada, tipoAsistencia, metodo)
+               VALUES (?, ?, NOW(), ?, ?)";
         $sIns = $db->prepare($insert);
-        $sIns->execute([$alumno['idEstudiante'], $idPersonal, $tipoAsistencia]);
+        $sIns->execute([$alumno['idEstudiante'], $idPersonal, $tipoAsistencia, $metodo]);
 
         echo json_encode([
             'status' => 'success',
