@@ -82,7 +82,7 @@ $admins = $controller->index();
                         <td class="px-4 py-3 flex justify-center gap-2">
 
                             <!-- Editar -->
-                            <button class="editar text-blue-600 hover:text-blue-800 transition"
+                            <button class="editar text-orange-600 hover:text-orange-700 transition"
                                 data-id="<?= $row['idPersonal']; ?>"
                                 data-nombre="<?= htmlspecialchars($row['Nombre']); ?>"
                                 data-apellido="<?= htmlspecialchars($row['Apellido']); ?>"
@@ -93,7 +93,7 @@ $admins = $controller->index();
                             </button>
 
                             <!-- Eliminar -->
-                            <button class="eliminar text-red-600 hover:text-red-800 transition"
+                            <button class="eliminar text-red-600 hover:text-red-700 transition"
                                 data-id="<?= $row['idPersonal']; ?>"
                                 title="Eliminar">
                                 <i class="fa-solid fa-trash text-lg"></i>

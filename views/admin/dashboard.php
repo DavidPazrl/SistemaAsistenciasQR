@@ -73,13 +73,6 @@ $alumnos = $controller->index();
                 </li>
 
                 <li>
-                    <a onclick="cargarSeccion('calendario')" class="flex items-center gap-3 px-4 py-2
-                        rounded-full hover:bg-white/40 transition cursor-pointer">
-                        <i class="fa-solid fa-calendar-days text-red-500"></i> Calendario
-                    </a>
-                </li>
-
-                <li>
                     <a href="<?php echo BASE_URL; ?>logout.php"
                        class="flex items-center justify-center gap-2 px-4 py-2
                               bg-gradient-to-r from-red-500 to-orange-500
