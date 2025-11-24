@@ -97,8 +97,8 @@ if (isset($_SESSION['usuario'])){
     <div class="continuous-slider">
         
         <!-- 8 imágenes originales -->
-        <img src="../../assets/img/imagen3.jpeg" class="slide-img">
         <img src="../../assets/img/imagen1.jpeg" class="slide-img">
+        <img src="../../assets/img/imagen3.jpeg" class="slide-img">
         <img src="../../assets/img/imagen2.jpeg" class="slide-img">
         <img src="../../assets/img/imagen4.jpeg" class="slide-img">
         <img src="../../assets/img/imagen5.jpeg" class="slide-img">
@@ -107,8 +107,8 @@ if (isset($_SESSION['usuario'])){
         <img src="../../assets/img/imagen8.jpeg" class="slide-img">
 
         <!-- Copias -->
-        <img src="../../assets/img/imagen3.jpeg" class="slide-img">
         <img src="../../assets/img/imagen1.jpeg" class="slide-img">
+        <img src="../../assets/img/imagen3.jpeg" class="slide-img">
         <img src="../../assets/img/imagen2.jpeg" class="slide-img">
         <img src="../../assets/img/imagen4.jpeg" class="slide-img">
         <img src="../../assets/img/imagen5.jpeg" class="slide-img">
@@ -123,20 +123,20 @@ if (isset($_SESSION['usuario'])){
     .continuous-slider {
         display: flex;
         height: 100%;
-        animation: slide 40s linear infinite;
+        animation: slide 90s linear infinite;
     }
 
     .slide-img {
-        min-width: 100vw;   /* 🔥 Cada imagen ocupa SIEMPRE el ancho real de la pantalla */
+        min-width: 100vw;   
         height: 100vh;
         object-fit: cover;
-        flex-shrink: 0;     /* 🔥 Nunca se aplastan */
+        flex-shrink: 0;    
     }
 
-    /* Mover todas las imagenes exactas sin importar el viewport */
+
     @keyframes slide {
         0%   { transform: translateX(0); }
-        100% { transform: translateX(-800vw); } /* 8 imágenes originales */
+        100% { transform: translateX(-800vw); } 
     }
 </style>
 
