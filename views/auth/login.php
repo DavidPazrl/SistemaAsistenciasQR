@@ -54,7 +54,7 @@ if (isset($_SESSION['usuario'])){
         class="relative z-10 w-full rounded-full px-12 py-1.5
         bg-gradient-to-r from-orange-300/30 to-red-300/30
         backdrop-blur-md border border-white/30
-        text-white focus:outline-none focus:ring-2 focus:ring-orange-300">
+        text-black focus:outline-none focus:ring-2 focus:ring-orange-300">
 </div>
 
 <!-- Contraseña -->
@@ -67,7 +67,7 @@ if (isset($_SESSION['usuario'])){
         class="relative z-10 w-full rounded-full px-12 py-1.5
         bg-gradient-to-r from-orange-300/30 to-red-300/30
         backdrop-blur-md border border-white/30
-        text-white focus:outline-none focus:ring-2 focus:ring-orange-300">
+        text-black focus:outline-none focus:ring-2 focus:ring-orange-300">
 </div>
 
 

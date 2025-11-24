@@ -94,7 +94,7 @@ $alumnos = $controller->index($grado, $seccion);
         </button>
 
         <!-- IMPORTAR EXCEL -->
-        <button id="btn-importar"
+        <button id="btn-importar" type="button"
             class="flex items-center gap-2 px-6 py-2 rounded-full
                    font-semibold text-white
                    bg-gradient-to-r from-yellow-300 to-yellow-500
