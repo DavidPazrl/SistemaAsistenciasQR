@@ -94,11 +94,10 @@ if (isset($_SESSION['usuario'])){
 
 <!-- SLIDER RESPONSIVE INFINITO -->
 <div class="absolute inset-0 overflow-hidden">
-    <div class="continuous-slider">
-        
-        <!-- 8 imágenes originales -->
-        <img src="../../assets/img/imagen3.jpeg" class="slide-img">
+    <div class="continuous-slider">      
+        <!-- 8 imágenes originales -->      
         <img src="../../assets/img/imagen1.jpeg" class="slide-img">
+        <img src="../../assets/img/imagen3.jpeg" class="slide-img">
         <img src="../../assets/img/imagen2.jpeg" class="slide-img">
         <img src="../../assets/img/imagen4.jpeg" class="slide-img">
         <img src="../../assets/img/imagen5.jpeg" class="slide-img">
@@ -106,16 +105,15 @@ if (isset($_SESSION['usuario'])){
         <img src="../../assets/img/imagen7.jpeg" class="slide-img">
         <img src="../../assets/img/imagen8.jpeg" class="slide-img">
 
-        <!-- Copias -->
-        <img src="../../assets/img/imagen3.jpeg" class="slide-img">
+        <!-- Copias -->  
         <img src="../../assets/img/imagen1.jpeg" class="slide-img">
+        <img src="../../assets/img/imagen3.jpeg" class="slide-img">
         <img src="../../assets/img/imagen2.jpeg" class="slide-img">
         <img src="../../assets/img/imagen4.jpeg" class="slide-img">
         <img src="../../assets/img/imagen5.jpeg" class="slide-img">
         <img src="../../assets/img/imagen6.jpeg" class="slide-img">
         <img src="../../assets/img/imagen7.jpeg" class="slide-img">
         <img src="../../assets/img/imagen8.jpeg" class="slide-img">
-
     </div>
 </div>
 
@@ -140,12 +138,6 @@ if (isset($_SESSION['usuario'])){
     }
 </style>
 
-
-
-
-
 </body>
-
-
-
 </html>
+
