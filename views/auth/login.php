@@ -54,7 +54,7 @@ if (isset($_SESSION['usuario'])){
         class="relative z-10 w-full rounded-full px-12 py-1.5
         bg-gradient-to-r from-orange-300/30 to-red-300/30
         backdrop-blur-md border border-white/30
-        text-white focus:outline-none focus:ring-2 focus:ring-orange-300">
+        text-orange focus:outline-none focus:ring-2 focus:ring-orange-300">
 </div>
 
 <!-- Contraseña -->
@@ -67,7 +67,7 @@ if (isset($_SESSION['usuario'])){
         class="relative z-10 w-full rounded-full px-12 py-1.5
         bg-gradient-to-r from-orange-300/30 to-red-300/30
         backdrop-blur-md border border-white/30
-        text-white focus:outline-none focus:ring-2 focus:ring-orange-300">
+        text-orange focus:outline-none focus:ring-2 focus:ring-orange-300">
 </div>
 
 
@@ -123,14 +123,14 @@ if (isset($_SESSION['usuario'])){
     .continuous-slider {
         display: flex;
         height: 100%;
-        animation: slide 40s linear infinite;
+        animation: slide 90s linear infinite;
     }
 
     .slide-img {
-        min-width: 100vw;   /* 🔥 Cada imagen ocupa SIEMPRE el ancho real de la pantalla */
+        min-width: 100vw;   
         height: 100vh;
         object-fit: cover;
-        flex-shrink: 0;     /* 🔥 Nunca se aplastan */
+        flex-shrink: 0;     
     }
 
     /* Mover todas las imagenes exactas sin importar el viewport */
