@@ -3,6 +3,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/proyectos/SistemaAsistenciasQR/config
 require_once ROOT . 'models/Reporte.php';
 require_once ROOT . 'config/database.php';
 require_once ROOT . 'vendor/autoload.php';
+
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
@@ -24,7 +25,7 @@ $fechaFin = $_POST['fechaFin'] ?? null;
 if ($fechaInicio && $fechaFin) {
     $data = $reporte->getReportesPorFechas($grado, $seccion, $fechaInicio, $fechaFin);
 } else {
-    $data = $reporte->getReportes($grado, $seccion, "semana"); // valor por defecto
+    $data = $reporte->getReportes($grado, $seccion, "semana");
 }
 
 echo json_encode($data);
@@ -43,38 +44,67 @@ function exportarExcel()
     $fechaInicio = $_GET['fechaInicio'] ?? null;
     $fechaFin = $_GET['fechaFin'] ?? null;
 
-    if ($fechaInicio && $fechaFin) {
-        $data = $reporte->getReportesPorFechas($grado, $seccion, $fechaInicio, $fechaFin);
-    } else {
-        $data = $reporte->getReportes($grado, $seccion, "semana");
+    if (!$grado || !$seccion || !$fechaInicio || !$fechaFin) {
+        die("Error: Faltan parámetros requeridos (grado, seccion, fechaInicio, fechaFin)");
     }
 
-    // Ruta absoluta al archivo
+    $datosExcel = $reporte->getReporteParaExcel($grado, $seccion, $fechaInicio, $fechaFin);
+
     $inputFileName = ROOT . 'assets/excel/ExcelAsistencias.xlsx';
+    
+    if (!file_exists($inputFileName)) {
+        die("Error: No se encuentra el archivo de plantilla en $inputFileName");
+    }
+
     $spreadsheet = IOFactory::load($inputFileName);
     $sheet = $spreadsheet->getActiveSheet();
 
-    for ($i = 3; $i <= 1000; $i++) {
-        foreach (range('B', 'I') as $col) {
-            $sheet->setCellValue("{$col}{$i}", '');
+    $sheet->setCellValue('C7', $grado);
+    $sheet->setCellValue('C9', $seccion);
+    $rangoFechas = $reporte->formatearRangoFechas($fechaInicio, $fechaFin);
+    $sheet->setCellValue('C14', $rangoFechas);
+
+    $diasHabiles = $datosExcel['diasHabiles'];
+    $columnaInicio = 'C'; 
+    
+    foreach ($diasHabiles as $index => $fecha) {
+        $columna = chr(ord($columnaInicio) + $index); 
+        
+        $diaFormateado = date('d', strtotime($fecha));
+        
+        $sheet->setCellValue("{$columna}15", $diaFormateado);
+        
+        if ($columna === 'Y') break;
+    }
+
+    
+    $estudiantes = $datosExcel['estudiantes'];
+    $filaInicio = 18; 
+    
+    foreach ($estudiantes as $indexEst => $estudiante) {
+        $fila = $filaInicio + $indexEst;
+        
+        $sheet->setCellValue("B{$fila}", $estudiante['nombreCompleto']);
+        
+        $asistenciasPorDia = $estudiante['asistenciasPorDia'];
+        
+        foreach ($diasHabiles as $index => $fecha) {
+            $columna = chr(ord('C') + $index); 
+            
+            $valorAsistencia = $asistenciasPorDia[$fecha] ?? '';
+            
+            $sheet->setCellValue("{$columna}{$fila}", $valorAsistencia);
+            
+            if ($columna === 'Y') break;
         }
+        
+        if ($fila >= 42) break;
     }
-
-    $row = 3;
-    foreach ($data as $r) {
-        $sheet->setCellValue("B{$row}", "QR" . $r['documento']);
-        $sheet->setCellValue("C{$row}", $r['Nombre'] . ' ' . $r['Apellidos']);
-        $sheet->setCellValue("D{$row}", $r['tipoAsistencia'] ?? '');
-        $sheet->setCellValue("E{$row}", $r['Grado'] ?? '');
-        $sheet->setCellValue("F{$row}", $r['Seccion'] ?? '');
-        $sheet->setCellValue("G{$row}", $r['fechaEntrada'] ?? '');
-        $sheet->setCellValue("H{$row}", $r['horaEntrada'] ?? '');
-        $sheet->setCellValue("I{$row}", $r['horaSalida'] ?? '');
-        $row++;
-    }
-
+    
+    $nombreArchivo = "Reporte_Grado{$grado}_Seccion{$seccion}_" . date('Y-m-d') . ".xlsx";
+    
     header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-    header('Content-Disposition: attachment;filename="Reporte_Asistencias.xlsx"');
+    header("Content-Disposition: attachment;filename=\"{$nombreArchivo}\"");
     header('Cache-Control: max-age=0');
 
     $writer = new Xlsx($spreadsheet);
