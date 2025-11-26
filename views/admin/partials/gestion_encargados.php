@@ -29,10 +29,10 @@ $encargados = $controller->index();
 <div class="p-6">
 
     <!-- TÍTULO -->
-    <h2 class="text-4xl font-bold mb-6 flex items-center justify-center gap-3 text-orange-500"
+    <h2 class="text-4xl font-bold mb-6 flex items-center justify-center gap-3 text-red-500"
         style="font-family: 'Cabo Soft', sans-serif; 
-               text-shadow: 0 0 8px rgba(255,150,0,0.6);">
-        <i class="fa-solid fa-users-gear text-orange-600 drop-shadow-[0_0_6px_rgba(255,100,0,0.6)]"></i>
+              text-shadow: 0 0 8px rgba(255, 50, 50, 0.6);">
+        <i class="fa-solid fa-users-gear text-red-600 drop-shadow-[0_0_6px_rgba(255,100,0,0.6)]"></i>
         Gestion de Encargados
     </h2>
 
@@ -42,8 +42,8 @@ $encargados = $controller->index();
         <button id="btn-agregar"
             class="flex items-center gap-2 px-6 py-2 rounded-full
                    font-['Cabo Soft'] text-sm text-white
-                   bg-gradient-to-r from-yellow-400 to-orange-500
-                   hover:from-yellow-500 hover:to-orange-600
+                   bg-gradient-to-r from-orange-400 to-red-500
+                   hover:from-orange-500 to-red-600
                    transition-all duration-300 shadow-md">
             <i class="fa-solid fa-user-plus"></i>
             Agregar Encargado
@@ -58,7 +58,7 @@ $encargados = $controller->index();
     <!-- TABLA -->
     <div class="overflow-x-auto bg-white shadow-lg rounded-xl border border-gray-200">
         <table id="tabla-encargados" class="min-w-full text-left">
-            <thead class="bg-gradient-to-r from-yellow-400 to-orange-500 text-white uppercase text-sm font-ultralight">
+            <thead class="bg-gradient-to-r from-orange-400 to-red-500 text-white uppercase text-sm font-ultralight">
                 <tr>
                     <th class="px-4 py-3">#</th>
                     <th class="px-4 py-3">Nombre</th>

@@ -20,6 +20,8 @@ $usuario = $_SESSION['usuario']; // nombre del usuario
     <!-- Tailwind -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.cdnfonts.com/css/cabo-soft" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400&display=swap" rel="stylesheet">
+
 
     <!-- Iconos -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -27,35 +29,111 @@ $usuario = $_SESSION['usuario']; // nombre del usuario
 
 <body class="bg-gradient-to-r from-orange-400 to-red-500 min-h-screen">
 
-    <div class="max-w-5xl mx-auto mt-10 p-6 bg-white/90 backdrop-blur rounded-2xl shadow-xl border border-orange-300">
+<div class="max-w-5xl mx-auto mt-10 p-6">
 
-        <!-- Encabezado -->
-        <div class="text-center mb-8">
+    <div class="grid grid-cols-[auto,1fr] grid-rows-[auto,auto] gap-x-6 items-start mt-6 justify-center">
 
-            <h1 class="text-5xl font-extrabold mb-6 flex items-center justify-center gap-3 text-red-600"
-    style="font-family: 'Cabo Soft', sans-serif;
-           text-shadow: 0 0 12px rgba(255, 50, 50, 0.7);">
-    Bienvenido <?= htmlspecialchars($usuario); ?>
-</h1>
+        <!-- Imagen (ocupa 2 filas) -->
+        <img src="<?= BASE_URL ?>assets/img/ggg.png"
+            class="h-60 object-contain row-span-2 mt-10"
+            style="filter: drop-shadow(0px 0px 8px rgba(0,0,0,0.4));">
 
+        <!-- Texto Bienvenido (arriba a la derecha) -->
+        <h1 class="text-[70px] font-light text-white"
+            style="font-family: 'Quicksand', sans-serif;
+                text-shadow: 0 0 18px rgba(255,255,255,0.85);">
+            Bienvenido <?= htmlspecialchars($usuario); ?>
+        </h1>
+
+        <!-- Panel (debajo a la derecha, junto a la imagen) -->
+        <div class="w-full p-8 py-24 rounded-2xl backdrop-blur-md"
+            style="
+                background: rgba(255,255,255,0.15);
+                border: 1px solid rgba(255,255,255,0.25);
+                box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+            ">
         </div>
+
+    </div>
+
+    <!------------------------------------ Contenedor de los dos paneles -->
+    <div class="mt-10 grid grid-cols-1 md:grid-cols-2 gap-8 w-full">
+
+        <!-- Panel Cumpleaños -->
+        <div class="p-6 rounded-2xl backdrop-blur-md"
+            style="
+                background: rgba(255,255,255,0.15);   
+                box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+            ">
+            <div class="absolute inset-0 rounded-2xl pointer-events-none"
+                style="
+                    padding: 1px;
+                    background: linear-gradient(to right, #fb923c, #ef4444);
+                    -webkit-mask: 
+                        linear-gradient(#fff 0 0) content-box, 
+                        linear-gradient(#fff 0 0);
+                    -webkit-mask-composite: xor;
+                    mask-composite: exclude;
+                ">
+            </div>
+            <h2 class="text-2xl text-white font-light mb-4"
+                style="text-shadow: 0 0 12px rgba(255,255,255,0.4);">
+                🎉 Cumpleaños de Hoy
+            </h2>
+
+            <p class="text-white/80">
+                Sin datos por ahora…
+            </p>
+        </div>
+
+        <!-- Panel Notificaciones -->
+        <div class="p-6 rounded-2xl backdrop-blur-md"
+            style="
+                background: rgba(255,255,255,0.15);
+                box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+            ">
+            <div class="absolute inset-0 rounded-2xl pointer-events-none"
+                style="
+                    padding: 1px;
+                    background: linear-gradient(to right, #fb923c, #ef4444);
+                    -webkit-mask: 
+                        linear-gradient(#fff 0 0) content-box, 
+                        linear-gradient(#fff 0 0);
+                    -webkit-mask-composite: xor;
+                    mask-composite: exclude;
+                ">
+            </div>
+            <h2 class="text-2xl text-white font-light mb-4"
+                style="text-shadow: 0 0 12px rgba(255,255,255,0.4);">
+                🔔 Notificaciones
+            </h2>
+
+            <p class="text-white/80">
+                No hay avisos importantes.
+            </p>
+        </div>
+
+    </div>
+
 
         <!-- Sección principal -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
 
             <!-- Imagen del colegio -->
             <div class="flex justify-center">
-                <div class="p-4 bg-white/70 backdrop-blur-sm rounded-xl shadow-lg w-full text-center border border-orange-300">
-                    
-                    <img src="<?= BASE_URL ?>assets/img/insignia.png"
-                        alt="Insignia del Colegio"
-                        class="w-40 h-40 object-contain mx-auto opacity-90 drop-shadow-lg">
+    <div class="relative z-20 mt-6">
 
-                    <p class="text-orange-700 mt-2 text-sm">
-                       
-                    </p>
-                </div>
-            </div>
+        <img src="<?= BASE_URL ?>assets/img/ggg.png"
+             alt="Insignia del Colegio"
+             class="h-60 object-contain"
+             style="filter: drop-shadow(0px 0px 8px rgba(0,0,0,0.4));">
+
+        <p class="text-orange-700 mt-2 text-sm"></p>
+    </div>
+</div>
+
+
+
 
             <!-- Sección Tutoriales -->
             <div class="flex">

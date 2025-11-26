@@ -31,11 +31,11 @@ $alumnos = $controller->index($grado, $seccion);
 <div class="p-6">
 
     <!-- TÍTULO -->
-    <h2 class="text-4xl font-bold mb-8 flex items-center justify-center gap-3 text-yellow-400"
+    <h2 class="text-4xl font-bold mb-8 flex items-center justify-center gap-3 text-red-500"
     style="font-family: 'Cabo Soft', sans-serif;
-           text-shadow: 0 0 10px rgba(255, 230, 120, 0.8);">
+           text-shadow: 0 0 8px rgba(255, 50, 50, 0.6);">
 
-    <i class="fa-solid fa-user-graduate text-yellow-400 drop-shadow-[0_0_8px_rgba(255,240,150,0.8)]"></i>
+    <i class="fa-solid fa-user-graduate text-red-600 drop-shadow-[0_0_8px_rgba(255,240,150,0.8)]"></i>
     Gestion de Alumnos
     </h2>
 
@@ -75,7 +75,7 @@ $alumnos = $controller->index($grado, $seccion);
 
         <!-- Botón Buscar -->
         <button type="submit"
-            class="px-4 py-2 rounded-full bg-gradient-to-r from-yellow-300 to-yellow-500
+            class="px-4 py-2 rounded-full bg-gradient-to-r from-orange-400 to-red-500
                    text-white shadow-md hover:from-yellow-400 hover:to-yellow-600 
                    transition flex items-center justify-center"
             title="Buscar">
@@ -86,7 +86,7 @@ $alumnos = $controller->index($grado, $seccion);
         <button id="btn-agregar" type="button"
             class="flex items-center gap-2 px-6 py-2 rounded-full
                    font-semibold text-white
-                   bg-gradient-to-r from-yellow-300 to-yellow-500
+                   bg-gradient-to-r from-orange-400 to-red-500
                    hover:from-yellow-400 hover:to-yellow-600
                    transition shadow-md">
 
@@ -97,8 +97,8 @@ $alumnos = $controller->index($grado, $seccion);
         <button id="btn-importar" type="button"
             class="flex items-center gap-2 px-6 py-2 rounded-full
                    font-semibold text-white
-                   bg-gradient-to-r from-yellow-300 to-yellow-500
-                   hover:from-yellow-400 hover:to-yellow-600
+                   bg-gradient-to-r from-orange-400 to-red-500
+                   hover:from-orange-500 to-red-600
                    transition shadow-md">
 
             <i class="fa-solid fa-file-import"></i> Importar Excel
@@ -115,7 +115,7 @@ $alumnos = $controller->index($grado, $seccion);
     <!-- TABLA -->
     <div class="overflow-x-auto bg-white shadow-lg rounded-xl border border-gray-200">
         <table id="tabla-alumnos" class="min-w-full text-left">
-            <thead class="bg-gradient-to-r from-yellow-300 to-yellow-500 text-white uppercase text-sm">
+            <thead class="bg-gradient-to-r from-orange-400 to-red-500 text-white uppercase text-sm">
                 <tr>
                     <th class="px-4 py-3">Nombre</th>
                     <th class="px-4 py-3">Apellidos</th>

@@ -94,7 +94,7 @@ document.addEventListener("DOMContentLoaded", () => {
         btn.addEventListener("click", () => {
             const id = btn.dataset.id;
             Swal.fire({
-                title: "Estas seguro?",
+                title: "¿Estas seguro?",
                 text: "Este alumno sera eliminado permanentemente",
                 icon: "warning",
                 showCancelButton: true,

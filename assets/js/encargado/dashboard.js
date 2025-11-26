@@ -433,55 +433,93 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // Marcar faltas del día
-    const btnMarcarFaltas = document.getElementById('btnMarcarFaltas');
-    if (btnMarcarFaltas) {
-        console.log("Configurando btnMarcarFaltas");
-        btnMarcarFaltas.addEventListener('click', async () => {
-            console.log("Click en marcar faltas");
-            if (!confirm('¿Estás seguro de marcar las faltas del día?\n\nEsto registrará como "Falto" a todos los alumnos que no marcaron asistencia hoy.\n\nEsta acción NO se puede deshacer.')) {
-                return;
-            }
+const btnMarcarFaltas = document.getElementById('btnMarcarFaltas');
 
-            const mensajeFaltas = document.getElementById('mensajeFaltas');
+if (btnMarcarFaltas) {
+    console.log("Configurando btnMarcarFaltas");
 
-            btnMarcarFaltas.disabled = true;
-            btnMarcarFaltas.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Procesando...';
+    btnMarcarFaltas.addEventListener('click', async () => {
+        console.log("Click en marcar faltas");
 
-            try {
-                const response = await fetch(BASE_URL + 'controllers/MarcarFaltasController.php', {
-                    method: 'POST'
-                });
-                const result = await response.json();
-                console.log("Resultado marcar faltas:", result);
-
-                mensajeFaltas.style.display = 'block';
-
-                if (result.status === 'success') {
-                    mensajeFaltas.className = 'alert alert-success mt-3';
-                    mensajeFaltas.textContent = `${result.message}`;
-                    cargarHistorial();
-                } else {
-                    mensajeFaltas.className = 'alert alert-danger mt-3';
-                    mensajeFaltas.textContent = `${result.message}`;
-                }
-
-                setTimeout(() => {
-                    mensajeFaltas.style.display = 'none';
-                }, 5000);
-
-            } catch (error) {
-                console.error('Error:', error);
-                mensajeFaltas.style.display = 'block';
-                mensajeFaltas.className = 'alert alert-danger mt-3';
-                mensajeFaltas.textContent = 'Error al marcar faltas';
-            } finally {
-                btnMarcarFaltas.disabled = false;
-                btnMarcarFaltas.innerHTML = '<i class="fas fa-user-times mr-2"></i>Marcar Faltas del Día';
-            }
+        // SweetAlert2 en lugar de confirm()
+        await Swal.fire({
+            title: "¿Estás seguro de marcar las faltas del día?",
+            html: `Esto registrará como <b>"Falto"</b> a todos los alumnos que no marcaron asistencia hoy.<br><br>
+                   <b>Esta acción NO se puede deshacer.</b>`,
+            icon: "warning",
+            confirmButtonColor: "#d33",
+            confirmButtonText: "Confirmar",
+            showCancelButton: false,
+            allowOutsideClick: false,
+            allowEscapeKey: false
         });
-    } else {
-        console.error("btnMarcarFaltas no encontrado");
-    }
+
+        // Si llega aquí, significa que se confirmó
+        const mensajeFaltas = document.getElementById('mensajeFaltas');
+
+        btnMarcarFaltas.disabled = true;
+        btnMarcarFaltas.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Procesando...';
+
+        try {
+            const response = await fetch(BASE_URL + 'controllers/MarcarFaltasController.php', {
+                method: 'POST'
+            });
+
+            const result = await response.json();
+            console.log("Resultado marcar faltas:", result);
+
+            mensajeFaltas.style.display = 'block';
+
+            if (result.status === 'success') {
+                mensajeFaltas.className = 'alert alert-success mt-3';
+                mensajeFaltas.textContent = `${result.message}`;
+                cargarHistorial();
+
+                Swal.fire({
+                    icon: "success",
+                    title: "Faltas marcadas",
+                    text: result.message,
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+
+            } else {
+                mensajeFaltas.className = 'alert alert-danger mt-3';
+                mensajeFaltas.textContent = `${result.message}`;
+
+                Swal.fire({
+                    icon: "error",
+                    title: "Error",
+                    text: result.message
+                });
+            }
+
+            setTimeout(() => mensajeFaltas.style.display = 'none', 5000);
+
+        } catch (error) {
+            console.error('Error:', error);
+
+            mensajeFaltas.style.display = 'block';
+            mensajeFaltas.className = 'alert alert-danger mt-3';
+            mensajeFaltas.textContent = 'Error al marcar faltas';
+
+            Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: "Error al marcar faltas"
+            });
+
+        } finally {
+            btnMarcarFaltas.disabled = false;
+            btnMarcarFaltas.innerHTML = '<i class="fas fa-user-times mr-2"></i>Marcar Faltas del Día';
+        }
+    });
+
+} else {
+    console.error("btnMarcarFaltas no encontrado");
+}
+
+   
 
     console.log("Cargando historial inicial...");
     cargarHistorial();

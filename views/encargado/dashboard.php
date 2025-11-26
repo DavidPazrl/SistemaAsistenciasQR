@@ -17,6 +17,7 @@ if (!isset($_SESSION['usuario']) || strtolower($_SESSION['rol']) !== 'encargado'
     <title>Dashboard Encargado</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         body {
@@ -79,7 +80,7 @@ if (!isset($_SESSION['usuario']) || strtolower($_SESSION['rol']) !== 'encargado'
 
                 <li>
                     <button type="button" id="btn-AgregarAlumno" class="flex items-center gap-3 px-4 py-2 rounded-full hover:bg-white/40 transition cursor-pointer w-full text-left">
-                        <i class="fa-solid fa-user-plus text-red-500"></i> Agregar Alumno
+                        <i class="fa-solid fa-user-plus text-red-500"></i> Agregar Asistencia de Alumno
                     </button>
                 </li>
 
@@ -363,7 +364,7 @@ if (!isset($_SESSION['usuario']) || strtolower($_SESSION['rol']) !== 'encargado'
         });
     </script>
     <script src="https://cdn.jsdelivr.net/npm/jsqr/dist/jsQR.js?v=2"></script>
-    <script src="<?php echo BASE_URL; ?>assets/js/encargado/dashboard.js"></script>
+    <script src="<?php echo BASE_URL; ?>assets/js/encargado/dashboard.js?v=2"></script>
 </body>
 
 </html>
