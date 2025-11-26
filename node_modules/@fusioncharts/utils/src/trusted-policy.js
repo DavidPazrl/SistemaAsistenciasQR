@@ -1,0 +1,1 @@
+"use strict";exports.__esModule=true;exports.default=void 0;var trustedPolicy;if(window.trustedTypes){trustedPolicy=window.trustedTypes.createPolicy("fusionChartsPolicy",{createHTML:function createHTML(input){return input}})}var _default=exports.default=trustedPolicy||{createHTML:function createHTML(input){return input}};

@@ -6,7 +6,7 @@ require_once ROOT . 'config/database.php';
 $db = (new Database())->getConnection();
 $reporte = new Reporte($db);
 
-// Parámetros de prueba (cámbialos según tus datos)
+// Parámetros de prueba 
 $grado = 1;
 $seccion = 'A';
 $fechaInicio = '2025-11-03';
@@ -313,7 +313,7 @@ $rangoFechas = $reporte->formatearRangoFechas($fechaInicio, $fechaFin);
 
         <?php if (empty($datos['estudiantes'])): ?>
             <div class="no-data">
-                ⚠️ No hay estudiantes registrados para Grado <?php echo $grado; ?> Sección <?php echo $seccion; ?>
+                No hay estudiantes registrados para Grado <?php echo $grado; ?> Sección <?php echo $seccion; ?>
             </div>
         <?php else: ?>
             <!-- Tabla de Asistencias (Simula el Excel) -->
@@ -378,7 +378,7 @@ $rangoFechas = $reporte->formatearRangoFechas($fechaInicio, $fechaFin);
             <div style="text-align: center; margin-top: 30px;">
                 <a href="controllers/ReporteController.php?accion=exportar&grado=<?php echo $grado; ?>&seccion=<?php echo $seccion; ?>&fechaInicio=<?php echo $fechaInicio; ?>&fechaFin=<?php echo $fechaFin; ?>" 
                    class="btn-exportar">
-                    📥 Exportar a Excel
+                    Exportar a Excel
                 </a>
             </div>
         <?php endif; ?>
@@ -386,7 +386,7 @@ $rangoFechas = $reporte->formatearRangoFechas($fechaInicio, $fechaFin);
         <!-- Información de Debug -->
         <details style="margin-top: 30px; padding: 20px; background: #f5f5f5; border-radius: 8px;">
             <summary style="cursor: pointer; font-weight: bold; color: #1976d2;">
-                🔍 Ver datos en formato JSON (Debug)
+                Ver datos en formato JSON (Debug)
             </summary>
             <pre style="margin-top: 20px; padding: 15px; background: #263238; color: #aed581; border-radius: 5px; overflow-x: auto; font-size: 12px;">
 <?php echo json_encode($datos, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE); ?>
